@@ -1,6 +1,7 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3174] on 19 January 2018 at 9:09:33 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3174] on 19 January 2018 at 9:29:19 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Cuis-University-Model' 1 0!
+!provides: 'Cuis-University-Model' 1 1!
+!requires: 'DenotativeObject' 1 21 nil!
 
 !Parser methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 13:14:10'!
 method: doit context: ctxt 
