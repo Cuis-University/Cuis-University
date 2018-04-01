@@ -1,7 +1,72 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3174] on 19 January 2018 at 9:29:19 pm'!
-'Description Please enter a description for this package'!
-!provides: 'Cuis-University-Model' 1 1!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3283] on 31 March 2018 at 7:12:57 pm'!
+'Description Installation script done'!
+!provides: 'Cuis-University-Model' 1 7!
 !requires: 'DenotativeObject' 1 21 nil!
+!requires: 'Chalten' 1 6 nil!
+SystemOrganization addCategory: #'Cuis-University-Model'!
+
+
+!classDefinition: #CuisUniversityInstallation category: #'Cuis-University-Model'!
+Object subclass: #CuisUniversityInstallation
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Cuis-University-Model'!
+!classDefinition: 'CuisUniversityInstallation class' category: #'Cuis-University-Model'!
+CuisUniversityInstallation class
+	instanceVariableNames: ''!
+
+
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/28/2018 16:48:46'!
+initialize
+
+	UnitsTestResource  installUnitsAsGlobals.
+	TimeUnits installUnitsAsGlobals.
+	StackSizeWatcher startWatchingWithDefaults.
+	DenotativeObjectTheme beCurrent.
+	TranscriptWindow allInstancesDo: [:aTranscriptWindow | aTranscriptWindow delete ].
+	self openWelcomeWindow.! !
+
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 19:59:40'!
+openWelcomeWindow
+
+	| welcomeWindow |
+	
+	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
+	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
+
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 16:32:32'!
+welcomeWindowContents
+
+	^Compiler evaluate: '(Text string: ''CuisUniversity
+
+Este es un ambiente creado especialmente para la enseñanza de la Programación Orientada a Objetos, usando Smalltalk como herramienta y en particular la implementación Argentina de Smalltalk denominada Cuis.
+
+El objetivo es que los interesados empiecen aprendiendo qué significa trabajar con objetos concretos (denotative objects) para luego pasar a implementaciones más complejas del paradigma.
+
+Para trabajar con objetos concretos, solo basta elegir la opcion "Open DenotativeBrowser" del menú principal.
+Para videos que muestran cómo usar CuisUniversity ir a: https://www.youtube.com/playlist?list=PLMkq_h36PcLCQiU5gxNmedxdXbl10JYeV
+
+Este ambiente viene con los siguientes paquetes instalados:
+- DenotativeObject: Herramienta que permite trabajar con Objetos sin Clases
+- Refactoring: Implementacion de refactorings automatizados para Cuis.
+- Aconcagua: Posibilita trabajar con medidas 
+- Chalten: Implementación del Calendario Gregoriano. Usa Aconcagua
+
+Implementadores:
+- Hernán Wilkinson, Máximo Prieto, Juan Manuel Vuletich
+
+Colaboradores
+- Nahuel Garbezza, Gastón Caruso, Angeles Tella Arena, Matias Melendi
+
+Sponsors:
+- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1230 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
+
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 21:46:08'!
+askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
+
+	^self askForSuperclassOf: aClass upTo: Object toImplement: aSelector ifCancel: cancelBlock
+! !
 
 !Parser methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 13:14:10'!
 method: doit context: ctxt 
@@ -114,9 +179,4 @@ sendsMessageToSelf: aSelector
 sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
-
-!Debugger methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 21:46:08'!
-askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
-
-	^self askForSuperclassOf: aClass upTo: Object toImplement: aSelector ifCancel: cancelBlock
-! !
+CuisUniversityInstallation initialize!

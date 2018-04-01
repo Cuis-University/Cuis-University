@@ -1,0 +1,5 @@
+CoreUpdates
+*.changes
+*.image
+*.sources
+Packages
