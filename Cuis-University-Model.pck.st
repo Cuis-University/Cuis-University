@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3283] on 31 March 2018 at 7:12:57 pm'!
-'Description Installation script done'!
-!provides: 'Cuis-University-Model' 1 7!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3285] on 11 April 2018 at 7:40:34 pm'!
+'Description change on the menu option to open DenotativeObject browser'!
+!provides: 'Cuis-University-Model' 1 8!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -35,7 +35,7 @@ openWelcomeWindow
 	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
 	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
 
-!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 16:32:32'!
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 4/11/2018 15:30:10'!
 welcomeWindowContents
 
 	^Compiler evaluate: '(Text string: ''CuisUniversity
@@ -44,7 +44,7 @@ Este es un ambiente creado especialmente para la enseñanza de la Programación Or
 
 El objetivo es que los interesados empiecen aprendiendo qué significa trabajar con objetos concretos (denotative objects) para luego pasar a implementaciones más complejas del paradigma.
 
-Para trabajar con objetos concretos, solo basta elegir la opcion "Open DenotativeBrowser" del menú principal.
+Para trabajar con objetos concretos, solo basta elegir la opcion "DenotativeObject Browser" del menú principal.
 Para videos que muestran cómo usar CuisUniversity ir a: https://www.youtube.com/playlist?list=PLMkq_h36PcLCQiU5gxNmedxdXbl10JYeV
 
 Este ambiente viene con los siguientes paquetes instalados:
