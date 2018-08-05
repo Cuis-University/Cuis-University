@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3285] on 11 April 2018 at 7:40:34 pm'!
-'Description change on the menu option to open DenotativeObject browser'!
-!provides: 'Cuis-University-Model' 1 8!
-!requires: 'DenotativeObject' 1 21 nil!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3389] on 5 August 2018 at 3:39:17 pm'!
+'Description Added reference to Theme'!
+!provides: 'Cuis-University-Model' 1 10!
 !requires: 'Chalten' 1 6 nil!
+!requires: 'DenotativeObject' 1 21 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -35,10 +35,10 @@ openWelcomeWindow
 	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
 	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
 
-!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 4/11/2018 15:30:10'!
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 8/5/2018 15:37:39'!
 welcomeWindowContents
 
-	^Compiler evaluate: '(Text string: ''CuisUniversity
+	^Compiler evaluate:  '(Text string: ''CuisUniversity
 
 Este es un ambiente creado especialmente para la enseñanza de la Programación Orientada a Objetos, usando Smalltalk como herramienta y en particular la implementación Argentina de Smalltalk denominada Cuis.
 
@@ -52,6 +52,8 @@ Este ambiente viene con los siguientes paquetes instalados:
 - Refactoring: Implementacion de refactorings automatizados para Cuis.
 - Aconcagua: Posibilita trabajar con medidas 
 - Chalten: Implementación del Calendario Gregoriano. Usa Aconcagua
+- Themes: Package que permite seleccionar distintos temas (colores), como Dark. Ir a "Preferences -> Themes"
+  (Usar preferentemente DenotativeObjectTheme y DenotativeObjectDarkTheme)
 
 Implementadores:
 - Hernán Wilkinson, Máximo Prieto, Juan Manuel Vuletich
@@ -60,7 +62,7 @@ Colaboradores
 - Nahuel Garbezza, Gastón Caruso, Angeles Tella Arena, Matias Melendi
 
 Sponsors:
-- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1230 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
+- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1416 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))' ! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 21:46:08'!
 askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
