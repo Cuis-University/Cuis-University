@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3389] on 5 August 2018 at 3:39:17 pm'!
-'Description Added reference to Theme'!
-!provides: 'Cuis-University-Model' 1 10!
-!requires: 'Chalten' 1 6 nil!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3562] on 7 January 2019 at 3:04:15 pm'!
+'Description Added icons to warning message of possible recursion'!
+!provides: 'Cuis-University-Model' 1 12!
 !requires: 'DenotativeObject' 1 21 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -70,41 +70,7 @@ askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
 	^self askForSuperclassOf: aClass upTo: Object toImplement: aSelector ifCancel: cancelBlock
 ! !
 
-!Parser methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 13:14:10'!
-method: doit context: ctxt 
-	" pattern [ | temporaries ] block => MethodNode."
-
-	| sap blk prim temps messageComment methodNode |
-	sap := self pattern: doit inContext: ctxt.
-	"sap={selector, arguments, precedence}"
-	self properties selector: (sap at: 1).
-	encoder selector: (sap at: 1).
-	(sap at: 2) do: [:argNode | argNode beMethodArg].
-	doit ifFalse: [self pragmaSequence].
-	temps := self temporaries.
-	messageComment := currentComment.
-	currentComment := nil.
-	doit ifFalse: [self pragmaSequence].
-	prim := self pragmaPrimitives.
-	self statements: #() innerBlock: doit.
-	blk := parseNode.
-	doit ifTrue: [blk returnLast]
-		ifFalse: [blk returnSelfIfNoOther: encoder].
-	hereType == #doIt ifFalse: [^self expected: 'Nothing more'].
-	methodNode := self newMethodNode comment: messageComment.
-	methodNode
-		selector: (sap at: 1)
-		arguments: (sap at: 2)
-		precedence: (sap at: 3)
-		temporaries: temps
-		block: blk
-		encoder: encoder
-		primitive: prim
-		properties: properties.
-	self interactive ifTrue: [ self performInteractiveChecks: methodNode ].
-	^methodNode! !
-
-!Parser methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 13:13:55'!
+!Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/13/2018 11:55:17'!
 performInteractiveChecks: aMethodNode
 
 	self
@@ -120,7 +86,7 @@ possibleSelfRecursionWarningMessage: aSelector
 	'Sending ' , aSelector printString
 	, ' to self inside the method body'! !
 
-!Parser methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/19/2018 20:45:41'!
+!Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 1/7/2019 15:02:24'!
 warnIfPossibilityOfSelfRecursion: aMethodNode
 
 	^ aMethodNode sendsRecursivelyToSelf ifTrue: [
@@ -128,7 +94,8 @@ warnIfPossibilityOfSelfRecursion: aMethodNode
 		answer := PopUpMenu
 			confirm: (self possibleSelfRecursionWarningMessage: aMethodNode selector)
 			trueChoice: 'Ignore and continue'
-			falseChoice: 'Change'.
+			falseChoice: 'Change'
+			 icons: #(acceptIcon cancelIcon).
 		answer ifFalse: [ self fail ]
 	]! !
 
