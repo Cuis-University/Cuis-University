@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3562] on 7 January 2019 at 3:04:15 pm'!
-'Description Added icons to warning message of possible recursion'!
-!provides: 'Cuis-University-Model' 1 12!
-!requires: 'DenotativeObject' 1 21 nil!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3634] on 28 February 2019 at 8:26:19 pm'!
+'Description New message in opened window'!
+!provides: 'Cuis-University-Model' 1 13!
 !requires: 'Chalten' 1 6 nil!
+!requires: 'DenotativeObject' 1 21 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -35,7 +35,7 @@ openWelcomeWindow
 	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
 	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
 
-!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 8/5/2018 15:37:39'!
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 2/28/2019 19:51:03'!
 welcomeWindowContents
 
 	^Compiler evaluate:  '(Text string: ''CuisUniversity
@@ -48,7 +48,9 @@ Para trabajar con objetos concretos, solo basta elegir la opcion "DenotativeObje
 Para videos que muestran cómo usar CuisUniversity ir a: https://www.youtube.com/playlist?list=PLMkq_h36PcLCQiU5gxNmedxdXbl10JYeV
 
 Este ambiente viene con los siguientes paquetes instalados:
-- DenotativeObject: Herramienta que permite trabajar con Objetos sin Clases
+- LiveTyping: Una VM especial con un ambiente de objetos extendido que anota los tipos de las variables
+  a medida que el sistema ejecuta. Mejora muchisimo la experiencia del programador.
+- DenotativeObject: Herramienta que permite trabajar con Objetos sin Clases.
 - Refactoring: Implementacion de refactorings automatizados para Cuis.
 - Aconcagua: Posibilita trabajar con medidas 
 - Chalten: Implementación del Calendario Gregoriano. Usa Aconcagua
@@ -62,7 +64,7 @@ Colaboradores
 - Nahuel Garbezza, Gastón Caruso, Angeles Tella Arena, Matias Melendi
 
 Sponsors:
-- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1416 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))' ! !
+- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 21:46:08'!
 askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
