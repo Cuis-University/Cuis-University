@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3634] on 28 February 2019 at 8:26:19 pm'!
-'Description New message in opened window'!
-!provides: 'Cuis-University-Model' 1 13!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3634] on 28 February 2019 at 10:16:44 pm'!
+'Description New initialization steps due to live typing'!
+!provides: 'Cuis-University-Model' 1 14!
 !requires: 'Chalten' 1 6 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -17,7 +17,7 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/28/2018 16:48:46'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 2/28/2019 22:15:10'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -25,7 +25,10 @@ initialize
 	StackSizeWatcher startWatchingWithDefaults.
 	DenotativeObjectTheme beCurrent.
 	TranscriptWindow allInstancesDo: [:aTranscriptWindow | aTranscriptWindow delete ].
-	self openWelcomeWindow.! !
+	self openWelcomeWindow.
+	
+	self runAllTests.
+	self removeSystemChangesFromChangeSet ! !
 
 !CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 19:59:40'!
 openWelcomeWindow
@@ -65,6 +68,27 @@ Colaboradores
 
 Sponsors:
 - 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
+
+!CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 2/28/2019 22:14:55'!
+removeSystemChangesFromChangeSet
+
+	ChangeSet allChangeSets 
+		select: [ :aChangeSet | aChangeSet isForBaseSystem ] 
+		thenDo: [ :aChangeSet | ChangeSet removeChangeSet: aChangeSet ]! !
+
+!CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 2/28/2019 22:14:40'!
+runAllTests
+
+	| testClasses testSuite |
+	
+	testClasses := TestCase allSubclasses reject: [:cls | cls isAbstract or: [ cls = DecompilerTests ]].
+	testSuite := TestSuite new.
+	testClasses do: [ :aTestClass | aTestClass addToSuiteFromSelectors: testSuite ].
+	
+	testSuite run.
+	
+	MenuMorph allInstances do: [:aMorph | aMorph delete ].
+	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 21:46:08'!
 askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
