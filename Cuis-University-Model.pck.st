@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3634] on 28 February 2019 at 10:16:44 pm'!
-'Description New initialization steps due to live typing'!
-!provides: 'Cuis-University-Model' 1 14!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3634] on 28 February 2019 at 10:42:01 pm'!
+'Description Initialization break in two parts. Second one is about running all tests with the LiveTyping VM'!
+!provides: 'Cuis-University-Model' 1 15!
 !requires: 'Chalten' 1 6 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -17,18 +17,26 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 2/28/2019 22:15:10'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 2/28/2019 22:40:41'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
 	StackSizeWatcher startWatchingWithDefaults.
 	DenotativeObjectTheme beCurrent.
-	TranscriptWindow allInstancesDo: [:aTranscriptWindow | aTranscriptWindow delete ].
-	self openWelcomeWindow.
 	
-	self runAllTests.
-	self removeSystemChangesFromChangeSet ! !
+	! !
+
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 2/28/2019 22:40:25'!
+initializeWhitLiveTypingVM
+
+	self 
+		runAllTests;
+		removeSystemChangesFromChangeSet;
+		openWelcomeWindow.
+
+	TranscriptWindow allInstancesDo: [:aTranscriptWindow | aTranscriptWindow delete ].
+! !
 
 !CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 19:59:40'!
 openWelcomeWindow
