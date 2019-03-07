@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3634] on 28 February 2019 at 10:42:01 pm'!
-'Description Initialization break in two parts. Second one is about running all tests with the LiveTyping VM'!
-!provides: 'Cuis-University-Model' 1 15!
-!requires: 'Chalten' 1 6 nil!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3641] on 7 March 2019 at 4:48:48 pm'!
+'Description Method categorization'!
+!provides: 'Cuis-University-Model' 1 16!
 !requires: 'DenotativeObject' 1 21 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -97,12 +97,6 @@ runAllTests
 	
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
-
-!Debugger methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/1/2018 21:46:08'!
-askForSuperclassOf: aClass toImplement: aSelector ifCancel: cancelBlock
-
-	^self askForSuperclassOf: aClass upTo: Object toImplement: aSelector ifCancel: cancelBlock
-! !
 
 !Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/13/2018 11:55:17'!
 performInteractiveChecks: aMethodNode
