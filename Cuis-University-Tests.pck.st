@@ -1,7 +1,10 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3174] on 19 January 2018 at 9:09:36 pm'!
-'Description Please enter a description for this package'!
-!provides: 'Cuis-University-Tests' 1 1!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3659] on 18 March 2019 at 2:47:42 pm'!
+'Description renamed to isNamed:'!
+!provides: 'Cuis-University-Tests' 1 2!
 !requires: 'Cuis-University-Model' 1 0 nil!
+SystemOrganization addCategory: #'Cuis-University-Tests'!
+
+
 !classDefinition: #ParseNodeTest category: #'Cuis-University-Tests'!
 TestCase subclass: #ParseNodeTest
 	instanceVariableNames: ''

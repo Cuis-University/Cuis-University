@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3641] on 7 March 2019 at 4:48:48 pm'!
-'Description Method categorization'!
-!provides: 'Cuis-University-Model' 1 16!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3659] on 18 March 2019 at 2:47:17 pm'!
+'Description renamed to isNamed:'!
+!provides: 'Cuis-University-Model' 1 17!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -152,8 +152,8 @@ empty
 
 	^ self statements: #() returns: false! !
 
-!SelectorNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:22:06'!
-named: aSelectorName
+!SelectorNode methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/14/2019 11:14:25'!
+isNamed: aSelectorName
 
 	^ self key = aSelectorName! !
 
@@ -167,10 +167,10 @@ named: aString
 
 	^ self new name: aString; yourself! !
 
-!MessageNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:22:17'!
+!MessageNode methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/14/2019 11:13:47'!
 sendsMessageToSelf: aSelector
 
-	^ self receiver referencesSelf and: [ self selector named: aSelector ]! !
+	^ self receiver referencesSelf and: [ self selector isNamed: aSelector ]! !
 
 !MethodNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:10:04'!
 sendsRecursivelyToSelf
