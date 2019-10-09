@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3659] on 18 March 2019 at 2:47:17 pm'!
-'Description renamed to isNamed:'!
-!provides: 'Cuis-University-Model' 1 17!
+'From Cuis 5.0 [latest update: #3846] on 9 October 2019 at 11:22:45 am'!
+'Description Instance creation & initialization messages automatic creation. Light Theme as current'!
+!provides: 'Cuis-University-Model' 1 19!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -17,13 +17,13 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 2/28/2019 22:40:41'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 10/9/2019 11:22:17'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
 	StackSizeWatcher startWatchingWithDefaults.
-	DenotativeObjectTheme beCurrent.
+	DenotativeObjectLightTheme beCurrent.
 	
 	! !
 
@@ -97,6 +97,162 @@ runAllTests
 	
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
+
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/9/2019 09:42:42'!
+argumentNamesOf: aMessage sentIn: aContext
+		
+	| argumentNames |
+	
+	aContext methodNode nodesDo: [ :aNode |
+		(aNode isMessageNode and: [ aNode selectorSymbol = aMessage selector ]) 
+			ifTrue: [ argumentNames := aNode arguments collect: [ :argument | argument name ]]].
+		
+	^argumentNames 
+
+		! !
+
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/9/2019 09:43:19'!
+compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
+	
+	| argumentNames realCategory initializationMethodSourceCode |
+	
+	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
+		
+	"Just in case something went wrong... - Hernan"
+	argumentNames ifNil: [ ^self compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext ].
+	
+	realCategory := aCategory = Categorizer default ifTrue: [ Categorizer initialization ]  ifFalse: [ aCategory ].
+	initializationMethodSourceCode := aMessage 
+		createInitializeMessageWith: argumentNames 
+		forEachInstVarNameDo: [ :anInstVarName |  
+			(aClass definesInstanceVariableNamedInHierarchy: anInstVarName) ifFalse: [ aClass addInstVarName: anInstVarName ]].
+		
+	aClass
+		compile: initializationMethodSourceCode
+		classified: realCategory 
+		! !
+
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/7/2019 14:43:50'!
+compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
+	
+	aClass
+		compile: (aMessage createInstanceCreationMessageFor: aClass)
+		classified: aCategory
+! !
+
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/7/2019 14:39:43'!
+compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext 
+	
+	aClass
+		compile: (aMessage createStubMethodFor: aClass)
+		classified: aCategory! !
+
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 17:19:38'!
+implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
+
+	(aClass isMeta and: [ aCategory = Categorizer instanceCreation]) 
+		ifTrue: [ self compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context: aContext ]
+		ifFalse: [ aMessage isInitializer 
+			ifTrue: [ self compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext ]
+			ifFalse: [ self compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext ]].
+		
+	aContext privRefreshWith: (aClass lookupSelector: aMessage selector).
+	aMessage arguments withIndexDo: [ :arg :index | aContext tempAt: index put: arg ].
+	self resetContext: aContext! !
+
+!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 16:04:23'!
+createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock  
+
+	| instVarName |
+	
+	argumentNames do: [ :anArgumentName | 
+		instVarName := anArgumentName asInstanceVariableName.
+		instVarNameBlock value: instVarName.
+		stream
+			newLine;tab;
+			nextPutAll: instVarName;
+			nextPutAll: ' := ';
+			nextPutAll: anArgumentName;
+			nextPut: $. ].		
+! !
+
+!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:57:14'!
+createInitializeMessageDefinitionIn: stream with: argumentNames
+
+	self selector keywords withIndexDo: [ :keyword :index | 
+		stream 
+			nextPutAll: keyword;
+			space;
+			nextPutAll: (argumentNames at: index);
+			space ].
+! !
+
+!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 16:05:36'!
+createInitializeMessageWith: argumentNames forEachInstVarNameDo: instVarNameBlock 
+
+	^ String streamContents: [ :stream |
+		self createInitializeMessageDefinitionIn: stream with: argumentNames.
+		stream newLine;tab.		
+		self writeShouldBeImplementedOn: stream.
+		self createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock ]! !
+
+!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:28:48'!
+createInstanceCreationMessageFor: aClass
+
+	| instanceCreationMessageString |
+	
+	^ String streamContents: [ :stream |
+		self writeMessageNameOn: stream.
+		instanceCreationMessageString := stream contents.
+		stream newLine; tab; nextPutAll: '"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"';newLine; tab.
+		self writeShouldBeImplementedOn: stream.
+		stream
+			newLine; tab;
+			nextPutAll: '^self new initialize', instanceCreationMessageString capitalized ]! !
+
+!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/7/2019 14:49:23'!
+isInitializer 
+
+	^selector beginsWith: 'initialize'.! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:40:22'!
+asInstanceVariableName
+	
+	self hasAnPrefix ifTrue: [ ^self asInstanceVariableNameWithoutAnPrefix ].
+	self hasAPrefix ifTrue: [ ^self asInstanceVariableNameWithoutAPrefix ].
+	
+	^self asInstanceVariableNameUncapitilized 
+	! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:42:10'!
+asInstanceVariableNameUncapitilized 
+
+	| instVarName |
+	
+	instVarName := self uncapitalized.
+	^self = instVarName 
+		ifTrue: [ instVarName, '_CHANGE_ME' ]
+		ifFalse: [ instVarName ]! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:25:13'!
+asInstanceVariableNameWithoutAPrefix
+	
+	^self allButFirst uncapitalized ! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:26:43'!
+asInstanceVariableNameWithoutAnPrefix
+	
+	^(self allButFirst: 2) uncapitalized ! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:23:38'!
+hasAPrefix
+	
+	^(self beginsWith: 'a') and: [ self size > 1 and: [ self second isUppercase ]]! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:22:54'!
+hasAnPrefix
+	
+	^(self beginsWith: 'an') and: [ self size > 2 and: [ self third isUppercase ]]! !
 
 !Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/13/2018 11:55:17'!
 performInteractiveChecks: aMethodNode
