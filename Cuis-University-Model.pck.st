@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3846] on 9 October 2019 at 11:22:45 am'!
-'Description Instance creation & initialization messages automatic creation. Light Theme as current'!
-!provides: 'Cuis-University-Model' 1 19!
+'From Cuis 5.0 [latest update: #3913] on 10 October 2019 at 10:51:01 am'!
+'Description Mejora cuando se define initialize automaticamente con variable existente'!
+!provides: 'Cuis-University-Model' 1 20!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -111,7 +111,7 @@ argumentNamesOf: aMessage sentIn: aContext
 
 		! !
 
-!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/9/2019 09:43:19'!
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/10/2019 08:18:02'!
 compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
 	
 	| argumentNames realCategory initializationMethodSourceCode |
@@ -129,7 +129,7 @@ compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: a
 		
 	aClass
 		compile: initializationMethodSourceCode
-		classified: realCategory 
+		classified: realCategory
 		! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/7/2019 14:43:50'!
@@ -147,10 +147,10 @@ compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aConte
 		compile: (aMessage createStubMethodFor: aClass)
 		classified: aCategory! !
 
-!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 17:19:38'!
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/10/2019 10:34:52'!
 implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 
-	(aClass isMeta and: [ aCategory = Categorizer instanceCreation]) 
+	[ (aClass isMeta and: [ aCategory = Categorizer instanceCreation]) 
 		ifTrue: [ self compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context: aContext ]
 		ifFalse: [ aMessage isInitializer 
 			ifTrue: [ self compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext ]
@@ -158,7 +158,12 @@ implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 		
 	aContext privRefreshWith: (aClass lookupSelector: aMessage selector).
 	aMessage arguments withIndexDo: [ :arg :index | aContext tempAt: index put: arg ].
-	self resetContext: aContext! !
+	self resetContext: aContext ]
+		on: RecompilationFailure
+		do: [ :aFailure | 
+			self inform: aFailure messageText.
+			self down; restart ]
+! !
 
 !Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 16:04:23'!
 createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock  
