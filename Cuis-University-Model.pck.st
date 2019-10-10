@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3913] on 10 October 2019 at 10:51:01 am'!
-'Description Mejora cuando se define initialize automaticamente con variable existente'!
-!provides: 'Cuis-University-Model' 1 20!
+'From Cuis 5.0 [latest update: #3913] on 10 October 2019 at 11:09:42 am'!
+'Description Mejora de descripcion de error'!
+!provides: 'Cuis-University-Model' 1 21!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
@@ -147,7 +147,7 @@ compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aConte
 		compile: (aMessage createStubMethodFor: aClass)
 		classified: aCategory! !
 
-!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/10/2019 10:34:52'!
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/10/2019 11:08:45'!
 implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 
 	[ (aClass isMeta and: [ aCategory = Categorizer instanceCreation]) 
@@ -161,7 +161,8 @@ implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 	self resetContext: aContext ]
 		on: RecompilationFailure
 		do: [ :aFailure | 
-			self inform: aFailure messageText.
+			self inform: 'There was a problem compiling ', aClass name, '>>#',aMessage selector,
+				' because:', String newLineString ,aFailure messageText.
 			self down; restart ]
 ! !
 
