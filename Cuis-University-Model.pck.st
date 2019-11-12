@@ -1,18 +1,21 @@
-'From Cuis 5.0 [latest update: #3913] on 10 October 2019 at 11:09:42 am'!
-'Description Mejora de descripcion de error'!
-!provides: 'Cuis-University-Model' 1 21!
-!requires: 'DenotativeObject' 1 21 nil!
+'From Cuis 5.0 [latest update: #3944] on 12 November 2019 at 9:17:10 am'!
+'Description Bug fixing on initialize message creation'!
+!provides: 'Cuis-University-Model' 1 23!
+!requires: 'Refactorings-ExtractMethod' 1 23 nil!
 !requires: 'Chalten' 1 6 nil!
+!requires: 'DenotativeObject' 1 21 nil!
+!requires: 'Refactoring' 1 537 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
-!classDefinition: #CuisUniversityInstallation category: #'Cuis-University-Model'!
+!classDefinition: #CuisUniversityInstallation category: #'Cuis-University-Model' stamp: 'HAW 11/12/2019 09:17:11'!
 Object subclass: #CuisUniversityInstallation
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Model'!
-!classDefinition: 'CuisUniversityInstallation class' category: #'Cuis-University-Model'!
+!classDefinition: 'CuisUniversityInstallation class' category: #'Cuis-University-Model' stamp: 'HAW 11/12/2019 09:17:11'!
 CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
@@ -182,15 +185,18 @@ createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstV
 			nextPut: $. ].		
 ! !
 
-!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:57:14'!
+!Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/12/2019 09:05:37'!
 createInitializeMessageDefinitionIn: stream with: argumentNames
 
-	self selector keywords withIndexDo: [ :keyword :index | 
-		stream 
-			nextPutAll: keyword;
-			space;
-			nextPutAll: (argumentNames at: index);
-			space ].
+	self selector isUnary 
+		ifTrue: [ stream nextPutAll: self selector ]
+		ifFalse: [ 
+			self selector keywords withIndexDo: [ :keyword :index | 
+				stream 
+					nextPutAll: keyword;
+					space;
+					nextPutAll: (argumentNames at: index);
+					space ]]
 ! !
 
 !Message methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 16:05:36'!
