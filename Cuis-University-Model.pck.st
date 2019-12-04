@@ -1,21 +1,21 @@
-'From Cuis 5.0 [latest update: #3944] on 12 November 2019 at 9:17:10 am'!
-'Description Bug fixing on initialize message creation'!
-!provides: 'Cuis-University-Model' 1 23!
+'From Cuis 5.0 [latest update: #3958] on 4 December 2019 at 11:57:03 am'!
+'Description Initialize message creation uses ''aRenameMe'' as parameter name when in the method creation AST it is not a variable'!
+!provides: 'Cuis-University-Model' 1 24!
 !requires: 'Refactorings-ExtractMethod' 1 23 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'TDDGuru' 1 25 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
-!classDefinition: #CuisUniversityInstallation category: #'Cuis-University-Model' stamp: 'HAW 11/12/2019 09:17:11'!
+!classDefinition: #CuisUniversityInstallation category: #'Cuis-University-Model'!
 Object subclass: #CuisUniversityInstallation
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Model'!
-!classDefinition: 'CuisUniversityInstallation class' category: #'Cuis-University-Model' stamp: 'HAW 11/12/2019 09:17:11'!
+!classDefinition: 'CuisUniversityInstallation class' category: #'Cuis-University-Model'!
 CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
@@ -101,18 +101,24 @@ runAllTests
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
-!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/9/2019 09:42:42'!
+!Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/24/2019 18:38:07'!
 argumentNamesOf: aMessage sentIn: aContext
 		
-	| argumentNames |
+	| argumentNames cantDeduceNameCounter |
 	
+	cantDeduceNameCounter := 0.
 	aContext methodNode nodesDo: [ :aNode |
 		(aNode isMessageNode and: [ aNode selectorSymbol = aMessage selector ]) 
-			ifTrue: [ argumentNames := aNode arguments collect: [ :argument | argument name ]]].
+			ifTrue: [ argumentNames := aNode arguments collect: [ :argument | 
+					argument isVariableNode 
+						ifTrue: [ argument name ] 
+						ifFalse: [ 
+							cantDeduceNameCounter := cantDeduceNameCounter + 1.
+							'aRenameMe',cantDeduceNameCounter printString ]]]].
 		
 	^argumentNames 
 
-		! !
+! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/10/2019 08:18:02'!
 compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
