@@ -1,7 +1,6 @@
-'From Cuis 5.0 [latest update: #3958] on 4 December 2019 at 11:57:03 am'!
+'From Cuis 5.0 [latest update: #3963] on 23 December 2019 at 11:40:16 am'!
 'Description Initialize message creation uses ''aRenameMe'' as parameter name when in the method creation AST it is not a variable'!
-!provides: 'Cuis-University-Model' 1 24!
-!requires: 'Refactorings-ExtractMethod' 1 23 nil!
+!provides: 'Cuis-University-Model' 1 25!
 !requires: 'TDDGuru' 1 25 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
