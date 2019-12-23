@@ -1,10 +1,10 @@
-'From Cuis 5.0 [latest update: #3963] on 23 December 2019 at 11:40:16 am'!
-'Description Initialize message creation uses ''aRenameMe'' as parameter name when in the method creation AST it is not a variable'!
-!provides: 'Cuis-University-Model' 1 25!
-!requires: 'TDDGuru' 1 25 nil!
+'From Cuis 5.0 [latest update: #3993] on 23 December 2019 at 12:25:46 pm'!
+'Description Line up with 3993'!
+!provides: 'Cuis-University-Model' 1 26!
+!requires: 'Chalten' 1 6 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -271,13 +271,13 @@ hasAnPrefix
 	
 	^(self beginsWith: 'an') and: [ self size > 2 and: [ self third isUppercase ]]! !
 
-!Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/13/2018 11:55:17'!
+!Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 12/23/2019 12:22:55'!
 performInteractiveChecks: aMethodNode
 
 	self
 		warnIfPossibilityOfSelfRecursion: aMethodNode;
 		declareUndeclaredTemps: aMethodNode;
-		removeUnusedTemps! !
+		removeUnusedTempsOf: aMethodNode ! !
 
 !Parser methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/19/2018 20:46:19'!
 possibleSelfRecursionWarningMessage: aSelector
@@ -325,6 +325,11 @@ empty
 
 	^ self statements: #() returns: false! !
 
+!MethodNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:10:04'!
+sendsRecursivelyToSelf
+
+	^ self body sendsMessageToSelf: self selector! !
+
 !SelectorNode methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/14/2019 11:14:25'!
 isNamed: aSelectorName
 
@@ -344,9 +349,4 @@ named: aString
 sendsMessageToSelf: aSelector
 
 	^ self receiver referencesSelf and: [ self selector isNamed: aSelector ]! !
-
-!MethodNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:10:04'!
-sendsRecursivelyToSelf
-
-	^ self body sendsMessageToSelf: self selector! !
 CuisUniversityInstallation initialize!

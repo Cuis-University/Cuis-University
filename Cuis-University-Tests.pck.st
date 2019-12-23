@@ -1,48 +1,47 @@
-'From Cuis 5.0 [latest update: #3938] on 29 October 2019 at 5:56:07 pm'!
-'Description Requeriments for Extract Method, Extract To Method Object and TDDGuru'!
-!provides: 'Cuis-University-Tests' 1 3!
+'From Cuis 5.0 [latest update: #3993] on 23 December 2019 at 12:26:41 pm'!
+'Description Line up with 3993'!
+!provides: 'Cuis-University-Tests' 1 4!
 !requires: 'Cuis-University-Model' 1 0 nil!
-!requires: 'Tests-Refactorings-ExtractMethod' 1 18 nil!
 SystemOrganization addCategory: #'Cuis-University-Tests'!
 
 
-!classDefinition: #ParseNodeTest category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: #ParseNodeTest category: #'Cuis-University-Tests'!
 TestCase subclass: #ParseNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Tests'!
-!classDefinition: 'ParseNodeTest class' category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: 'ParseNodeTest class' category: #'Cuis-University-Tests'!
 ParseNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #BlockNodeTest category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: #BlockNodeTest category: #'Cuis-University-Tests'!
 ParseNodeTest subclass: #BlockNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Tests'!
-!classDefinition: 'BlockNodeTest class' category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: 'BlockNodeTest class' category: #'Cuis-University-Tests'!
 BlockNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #MessageNodeTest category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: #MessageNodeTest category: #'Cuis-University-Tests'!
 ParseNodeTest subclass: #MessageNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Tests'!
-!classDefinition: 'MessageNodeTest class' category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: 'MessageNodeTest class' category: #'Cuis-University-Tests'!
 MessageNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #VariableNodeTest category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: #VariableNodeTest category: #'Cuis-University-Tests'!
 ParseNodeTest subclass: #VariableNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Tests'!
-!classDefinition: 'VariableNodeTest class' category: #'Cuis-University-Tests' stamp: 'HAW 10/29/2019 17:56:07'!
+!classDefinition: 'VariableNodeTest class' category: #'Cuis-University-Tests'!
 VariableNodeTest class
 	instanceVariableNames: ''!
 
