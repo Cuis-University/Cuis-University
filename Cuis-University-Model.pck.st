@@ -1,10 +1,10 @@
-'From Cuis 5.0 [latest update: #3993] on 23 December 2019 at 12:25:46 pm'!
-'Description Line up with 3993'!
-!provides: 'Cuis-University-Model' 1 26!
-!requires: 'Chalten' 1 6 nil!
+'From Cuis 5.0 [latest update: #4075] on 24 March 2020 at 1:01:03 pm'!
+'Description Disables autoNumberUserChanges'!
+!provides: 'Cuis-University-Model' 1 27!
+!requires: 'TDDGuru' 1 25 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'TDDGuru' 1 25 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -19,13 +19,15 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 10/9/2019 11:22:17'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/24/2020 13:00:16'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
 	StackSizeWatcher startWatchingWithDefaults.
 	DenotativeObjectLightTheme beCurrent.
+	Preferences disable: #autoNumberUserChanges.
+	
 	
 	! !
 
