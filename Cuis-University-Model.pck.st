@@ -1,10 +1,10 @@
-'From Cuis 5.0 [latest update: #4075] on 24 March 2020 at 1:01:03 pm'!
-'Description Disables autoNumberUserChanges'!
-!provides: 'Cuis-University-Model' 1 27!
-!requires: 'TDDGuru' 1 25 nil!
+'From Cuis 5.0 [latest update: #4076] on 24 March 2020 at 5:12:08 pm'!
+'Description informBlockingUI:'!
+!provides: 'Cuis-University-Model' 1 28!
+!requires: 'Chalten' 1 6 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -101,6 +101,12 @@ runAllTests
 	
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
+
+!Object methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/24/2020 17:10:28'!
+informBlockingUI: aStringToShow
+	"Display aString blocking the UI"
+
+	aStringToShow isEmptyOrNil ifFalse: [PopUpMenu informBlockingUI: aStringToShow]! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/24/2019 18:38:07'!
 argumentNamesOf: aMessage sentIn: aContext
@@ -351,4 +357,9 @@ named: aString
 sendsMessageToSelf: aSelector
 
 	^ self receiver referencesSelf and: [ self selector isNamed: aSelector ]! !
+
+!PopUpMenu class methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/24/2020 17:10:15'!
+informBlockingUI: aStringToShow
+
+	(self labels: ' OK ' icons: #(emblemImportantIcon)) startUpWithCaption: aStringToShow ! !
 CuisUniversityInstallation initialize!
