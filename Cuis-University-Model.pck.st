@@ -1,10 +1,10 @@
-'From Cuis 5.0 [latest update: #4076] on 24 March 2020 at 5:12:08 pm'!
-'Description informBlockingUI:'!
-!provides: 'Cuis-University-Model' 1 28!
-!requires: 'Chalten' 1 6 nil!
+'From Cuis 5.0 [latest update: #4137] on 7 June 2020 at 11:34:11 am'!
+'Description Moved some methods to LiveTyping to allow LiveTyping to work without Univeristy'!
+!provides: 'Cuis-University-Model' 1 29!
+!requires: 'TDDGuru' 1 25 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'TDDGuru' 1 25 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -328,20 +328,10 @@ sendsMessageToSelf: aSelector
 
 	^ self statements anySatisfy: [ :statementNode | statementNode sendsMessageToSelf: aSelector ]! !
 
-!BlockNode class methodsFor: '*Cuis-University-Model' stamp: 'RNG 1/19/2018 21:06:55'!
-empty
-
-	^ self statements: #() returns: false! !
-
 !MethodNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:10:04'!
 sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
-
-!SelectorNode methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/14/2019 11:14:25'!
-isNamed: aSelectorName
-
-	^ self key = aSelectorName! !
 
 !VariableNode methodsFor: '*Cuis-University-Model' stamp: 'RNG 12/31/2017 19:16:41'!
 referencesSelf
