@@ -1,7 +1,8 @@
-'From Cuis 5.0 [latest update: #4137] on 7 June 2020 at 11:34:11 am'!
-'Description Moved some methods to LiveTyping to allow LiveTyping to work without Univeristy'!
-!provides: 'Cuis-University-Model' 1 29!
+'From Cuis 5.0 [latest update: #4137] on 15 June 2020 at 8:35:59 pm'!
+'Description Tools finder by Nico Papagna as requirement'!
+!provides: 'Cuis-University-Model' 1 30!
 !requires: 'TDDGuru' 1 25 nil!
+!requires: 'Tools-Finder' 1 12 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
 !requires: 'Chalten' 1 6 nil!
