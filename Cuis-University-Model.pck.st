@@ -1,11 +1,11 @@
-'From Cuis 5.0 [latest update: #4137] on 15 June 2020 at 8:35:59 pm'!
-'Description Tools finder by Nico Papagna as requirement'!
-!provides: 'Cuis-University-Model' 1 30!
-!requires: 'TDDGuru' 1 25 nil!
+'From Cuis 5.0 [latest update: #4364] on 30 August 2020 at 7:01:01 pm'!
+'Description disables logDebuggerStackToFile'!
+!provides: 'Cuis-University-Model' 1 31!
 !requires: 'Tools-Finder' 1 12 nil!
+!requires: 'Chalten' 1 6 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: #'Cuis-University-Model'!
 
 
@@ -20,7 +20,7 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/24/2020 13:00:16'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/29/2020 18:00:55'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -28,6 +28,8 @@ initialize
 	StackSizeWatcher startWatchingWithDefaults.
 	DenotativeObjectLightTheme beCurrent.
 	Preferences disable: #autoNumberUserChanges.
+	Preferences disable: #logDebuggerStackToFile.
+
 	
 	
 	! !
