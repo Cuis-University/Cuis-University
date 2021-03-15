@@ -1,21 +1,22 @@
-'From Cuis 5.0 [latest update: #4364] on 30 August 2020 at 7:01:01 pm'!
-'Description disables logDebuggerStackToFile'!
-!provides: 'Cuis-University-Model' 1 31!
+'From Cuis 5.0 [latest update: #4532] on 6 March 2021 at 7:07:32 pm'!
+'Description removed SVG and Spaceware as requirements'!
+!provides: 'Cuis-University-Model' 1 35!
+!requires: 'TDDGuru' 1 25 nil!
+!requires: 'DenotativeObject' 1 21 nil!
+!requires: 'CodeCoverage' 1 3 nil!
+!requires: 'Refactoring' 1 537 nil!
 !requires: 'Tools-Finder' 1 12 nil!
 !requires: 'Chalten' 1 6 nil!
-!requires: 'DenotativeObject' 1 21 nil!
-!requires: 'Refactoring' 1 537 nil!
-!requires: 'TDDGuru' 1 25 nil!
-SystemOrganization addCategory: #'Cuis-University-Model'!
+SystemOrganization addCategory: 'Cuis-University-Model'!
 
 
-!classDefinition: #CuisUniversityInstallation category: #'Cuis-University-Model'!
+!classDefinition: #CuisUniversityInstallation category: 'Cuis-University-Model'!
 Object subclass: #CuisUniversityInstallation
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Cuis-University-Model'!
-!classDefinition: 'CuisUniversityInstallation class' category: #'Cuis-University-Model'!
+!classDefinition: 'CuisUniversityInstallation class' category: 'Cuis-University-Model'!
 CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
@@ -34,11 +35,11 @@ initialize
 	
 	! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 2/28/2019 22:40:25'!
-initializeWhitLiveTypingVM
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/6/2021 18:44:01'!
+initializeWithLiveTypingVM
 
 	self 
-		runAllTests;
+		"runAllTests;"
 		removeSystemChangesFromChangeSet;
 		openWelcomeWindow.
 
