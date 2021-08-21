@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4532] on 6 March 2021 at 7:07:32 pm'!
-'Description removed SVG and Spaceware as requirements'!
-!provides: 'Cuis-University-Model' 1 35!
+'From Cuis 5.0 [latest update: #4782] on 21 August 2021 at 5:30:32 pm'!
+'Description Enable #checkLostChangesOnStartUp preference'!
+!provides: 'Cuis-University-Model' 1 36!
 !requires: 'TDDGuru' 1 25 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'CodeCoverage' 1 3 nil!
@@ -21,7 +21,7 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/29/2020 18:00:55'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/21/2021 12:17:53'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -30,6 +30,8 @@ initialize
 	DenotativeObjectLightTheme beCurrent.
 	Preferences disable: #autoNumberUserChanges.
 	Preferences disable: #logDebuggerStackToFile.
+	Preferences enable: #checkLostChangesOnStartUp.
+	
 
 	
 	
