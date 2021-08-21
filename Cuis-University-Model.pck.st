@@ -1,10 +1,11 @@
-'From Cuis 5.0 [latest update: #4782] on 21 August 2021 at 5:30:32 pm'!
-'Description Enable #checkLostChangesOnStartUp preference'!
-!provides: 'Cuis-University-Model' 1 36!
+'From Cuis 5.0 [latest update: #4782] on 21 August 2021 at 5:54:07 pm'!
+'Description Add Morphic-Widgets-Extras as requirement'!
+!provides: 'Cuis-University-Model' 1 37!
 !requires: 'TDDGuru' 1 25 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'CodeCoverage' 1 3 nil!
 !requires: 'Refactoring' 1 537 nil!
+!requires: 'Morphic-Widgets-Extras' 1 35 nil!
 !requires: 'Tools-Finder' 1 12 nil!
 !requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: 'Cuis-University-Model'!
