@@ -1,13 +1,13 @@
-'From Cuis 5.0 [latest update: #4782] on 21 August 2021 at 5:54:07 pm'!
-'Description Add Morphic-Widgets-Extras as requirement'!
-!provides: 'Cuis-University-Model' 1 37!
-!requires: 'TDDGuru' 1 25 nil!
+'From Cuis 5.0 [latest update: #4809] on 25 August 2021 at 3:13:02 pm'!
+'Description Add change newline encoder menu option'!
+!provides: 'Cuis-University-Model' 1 38!
+!requires: 'Chalten' 1 6 nil!
+!requires: 'Morphic-Widgets-Extras' 1 35 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'CodeCoverage' 1 3 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'Morphic-Widgets-Extras' 1 35 nil!
 !requires: 'Tools-Finder' 1 12 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: 'Cuis-University-Model'!
 
 
@@ -109,11 +109,63 @@ runAllTests
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
+!CuisUniversityInstallation class methodsFor: 'browser menues' stamp: 'HAW 8/25/2021 14:50:32'!
+systemCategoryMenuOptions
+
+	^{ 
+		{
+				#itemGroup	 		-> 	50.
+				#itemOrder 			-> 	15.
+				#label 			-> 	'change new line encode...'.
+				#object 			-> 	#model.
+				#selector 			-> 	#changeNewLineEncode.
+				#icon 			-> 	#updateIcon
+			} asDictionary
+		}! !
+
 !Object methodsFor: '*Cuis-University-Model' stamp: 'HAW 3/24/2020 17:10:28'!
 informBlockingUI: aStringToShow
 	"Display aString blocking the UI"
 
 	aStringToShow isEmptyOrNil ifFalse: [PopUpMenu informBlockingUI: aStringToShow]! !
+
+!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/25/2021 12:01:01'!
+changeNewLineEncode
+	
+	| index |
+	
+	selectedSystemCategory ifNil: [ ^ self]. 
+	
+	index := self selectEncodeToConvert.					
+	index = 4 ifFalse: [ self convertToEncode: index ].
+	! !
+
+!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/25/2021 11:39:28'!
+convertToEncode: encondeNumber 
+
+	| categorySubclasses class newSourceCode sourceCode |
+	
+	(encondeNumber between: 1 and: 3) ifFalse: [ self error: 'Invalid encode number' ].
+	
+	categorySubclasses := SystemOrganization listAtCategoryNamed: selectedSystemCategory.
+		
+	categorySubclasses do: [:aClassName | 
+		class := Smalltalk classNamed: aClassName.
+		class selectors do: [:aMethod |
+			sourceCode := (class compiledMethodAt: aMethod) sourceCode.
+			encondeNumber = 1 ifTrue: [ newSourceCode := sourceCode withCuisLineEndings. ].
+			encondeNumber = 2 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crString. ].
+			encondeNumber = 3 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crlfString. ].
+			class compile: newSourceCode ]]! !
+
+!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/25/2021 11:40:52'!
+selectEncodeToConvert
+
+	^(PopUpMenu 
+		labelArray: {'LF (Cuis default)'. 'CR'. 'CRLF'. 'Cancel'}
+		lines: #()
+		icons: #(updateIcon updateIcon updateIcon cancelIcon) ) 
+		startUpWithCaption: 'To which binary encode would you like to change the code?'.! !
 
 !Debugger methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/24/2019 18:38:07'!
 argumentNamesOf: aMessage sentIn: aContext
