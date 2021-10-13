@@ -1,13 +1,13 @@
-'From Cuis 5.0 [latest update: #4809] on 25 August 2021 at 3:13:02 pm'!
-'Description Add change newline encoder menu option'!
-!provides: 'Cuis-University-Model' 1 38!
-!requires: 'Chalten' 1 6 nil!
+'From Cuis 5.0 [latest update: #4913] on 13 October 2021 at 1:01:17 pm'!
+'Description Preferences setQuickAnnotationsInBrowsers '!
+!provides: 'Cuis-University-Model' 1 39!
+!requires: 'TDDGuru' 1 25 nil!
 !requires: 'Morphic-Widgets-Extras' 1 35 nil!
 !requires: 'DenotativeObject' 1 21 nil!
-!requires: 'CodeCoverage' 1 3 nil!
 !requires: 'Refactoring' 1 537 nil!
+!requires: 'CodeCoverage' 1 3 nil!
 !requires: 'Tools-Finder' 1 12 nil!
-!requires: 'TDDGuru' 1 25 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: 'Cuis-University-Model'!
 
 
@@ -22,7 +22,7 @@ CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/21/2021 12:17:53'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 10/13/2021 12:59:37'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -32,6 +32,7 @@ initialize
 	Preferences disable: #autoNumberUserChanges.
 	Preferences disable: #logDebuggerStackToFile.
 	Preferences enable: #checkLostChangesOnStartUp.
+	Preferences setQuickAnnotationsInBrowsers.
 	
 
 	
