@@ -1,13 +1,13 @@
-'From Cuis 5.0 [latest update: #4913] on 13 October 2021 at 1:01:17 pm'!
-'Description Preferences setQuickAnnotationsInBrowsers '!
-!provides: 'Cuis-University-Model' 1 39!
-!requires: 'TDDGuru' 1 25 nil!
+'From Cuis 5.0 [latest update: #4913] on 18 October 2021 at 5:25:20 pm'!
+'Description convertToEncode: changes metaclasses too'!
+!provides: 'Cuis-University-Model' 1 40!
+!requires: 'Chalten' 1 6 nil!
 !requires: 'Morphic-Widgets-Extras' 1 35 nil!
+!requires: 'CodeCoverage' 1 3 nil!
 !requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'CodeCoverage' 1 3 nil!
 !requires: 'Tools-Finder' 1 12 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: 'Cuis-University-Model'!
 
 
@@ -141,7 +141,7 @@ changeNewLineEncode
 	index = 4 ifFalse: [ self convertToEncode: index ].
 	! !
 
-!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/25/2021 11:39:28'!
+!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/18/2021 17:24:13'!
 convertToEncode: encondeNumber 
 
 	| categorySubclasses class newSourceCode sourceCode |
@@ -152,12 +152,12 @@ convertToEncode: encondeNumber
 		
 	categorySubclasses do: [:aClassName | 
 		class := Smalltalk classNamed: aClassName.
-		class selectors do: [:aMethod |
-			sourceCode := (class compiledMethodAt: aMethod) sourceCode.
+		{ class. class class } do: [ :aClass | aClass selectors do: [:aMethod |
+			sourceCode := (aClass compiledMethodAt: aMethod) sourceCode.
 			encondeNumber = 1 ifTrue: [ newSourceCode := sourceCode withCuisLineEndings. ].
 			encondeNumber = 2 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crString. ].
 			encondeNumber = 3 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crlfString. ].
-			class compile: newSourceCode ]]! !
+			aClass compile: newSourceCode ]]]! !
 
 !Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/25/2021 11:40:52'!
 selectEncodeToConvert
