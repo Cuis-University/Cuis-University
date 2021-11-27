@@ -1,13 +1,13 @@
-'From Cuis 5.0 [latest update: #4913] on 18 October 2021 at 5:25:20 pm'!
-'Description convertToEncode: changes metaclasses too'!
-!provides: 'Cuis-University-Model' 1 40!
-!requires: 'Chalten' 1 6 nil!
+'From Cuis 5.0 [latest update: #4972] on 27 November 2021 at 11:38:50 am'!
+'Description Support for parameters starting with ''un'' and ''una'''!
+!provides: 'Cuis-University-Model' 1 41!
+!requires: 'TDDGuru' 1 25 nil!
 !requires: 'Morphic-Widgets-Extras' 1 35 nil!
 !requires: 'CodeCoverage' 1 3 nil!
-!requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Refactoring' 1 537 nil!
+!requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Tools-Finder' 1 12 nil!
-!requires: 'TDDGuru' 1 25 nil!
+!requires: 'Chalten' 1 6 nil!
 SystemOrganization addCategory: 'Cuis-University-Model'!
 
 
@@ -300,11 +300,13 @@ isInitializer
 
 	^selector beginsWith: 'initialize'.! !
 
-!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:40:22'!
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:37:20'!
 asInstanceVariableName
 	
-	self hasAnPrefix ifTrue: [ ^self asInstanceVariableNameWithoutAnPrefix ].
-	self hasAPrefix ifTrue: [ ^self asInstanceVariableNameWithoutAPrefix ].
+	self hasAnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
+	self hasAPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 1 ].
+	self hasUnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
+	self hasUnaPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 3 ].
 	
 	^self asInstanceVariableNameUncapitilized 
 	! !
@@ -319,25 +321,35 @@ asInstanceVariableNameUncapitilized
 		ifTrue: [ instVarName, '_CHANGE_ME' ]
 		ifFalse: [ instVarName ]! !
 
-!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:25:13'!
-asInstanceVariableNameWithoutAPrefix
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:33:36'!
+continuesWithUppercaseAfterPrefix: aPrefix
 	
-	^self allButFirst uncapitalized ! !
+	^(self beginsWith: aPrefix) and: [ self size > aPrefix size and: [ (self at: aPrefix size + 1) isUppercase ]]! !
 
-!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:26:43'!
-asInstanceVariableNameWithoutAnPrefix
-	
-	^(self allButFirst: 2) uncapitalized ! !
-
-!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:23:38'!
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:33:36'!
 hasAPrefix
 	
-	^(self beginsWith: 'a') and: [ self size > 1 and: [ self second isUppercase ]]! !
+	^self continuesWithUppercaseAfterPrefix: 'a'! !
 
-!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/8/2019 15:22:54'!
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:33:51'!
 hasAnPrefix
 	
-	^(self beginsWith: 'an') and: [ self size > 2 and: [ self third isUppercase ]]! !
+	^self continuesWithUppercaseAfterPrefix: 'an'! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:34:00'!
+hasUnPrefix
+
+	^self continuesWithUppercaseAfterPrefix: 'un'! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:34:08'!
+hasUnaPrefix
+	
+	^self continuesWithUppercaseAfterPrefix: 'una'! !
+
+!String methodsFor: '*Cuis-University-Model' stamp: 'HAW 11/27/2021 11:36:54'!
+uncapitalizedRemovingFirst: numberOfChars
+	
+	^(self allButFirst: numberOfChars) uncapitalized ! !
 
 !Parser methodsFor: '*Cuis-University-Model' stamp: 'HAW 12/23/2019 12:22:55'!
 performInteractiveChecks: aMethodNode
