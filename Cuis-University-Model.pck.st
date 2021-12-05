@@ -1,13 +1,13 @@
-'From Cuis 5.0 [latest update: #4972] on 27 November 2021 at 11:38:50 am'!
-'Description Support for parameters starting with ''un'' and ''una'''!
-!provides: 'Cuis-University-Model' 1 41!
-!requires: 'TDDGuru' 1 25 nil!
+'From Cuis 5.0 [latest update: #4993] on 5 December 2021 at 11:20:04 am'!
+'Description fix encode index error when pressing esc on the menu'!
+!provides: 'Cuis-University-Model' 1 42!
+!requires: 'Chalten' 1 6 nil!
+!requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Morphic-Widgets-Extras' 1 35 nil!
 !requires: 'CodeCoverage' 1 3 nil!
 !requires: 'Refactoring' 1 537 nil!
-!requires: 'DenotativeObject' 1 21 nil!
 !requires: 'Tools-Finder' 1 12 nil!
-!requires: 'Chalten' 1 6 nil!
+!requires: 'TDDGuru' 1 25 nil!
 SystemOrganization addCategory: 'Cuis-University-Model'!
 
 
@@ -130,7 +130,7 @@ informBlockingUI: aStringToShow
 
 	aStringToShow isEmptyOrNil ifFalse: [PopUpMenu informBlockingUI: aStringToShow]! !
 
-!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 8/25/2021 12:01:01'!
+!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 12/5/2021 11:19:13'!
 changeNewLineEncode
 	
 	| index |
@@ -138,15 +138,13 @@ changeNewLineEncode
 	selectedSystemCategory ifNil: [ ^ self]. 
 	
 	index := self selectEncodeToConvert.					
-	index = 4 ifFalse: [ self convertToEncode: index ].
+	(index between: 1 and: 3) ifTrue: [ self convertToEncode: index ].
 	! !
 
-!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 10/18/2021 17:24:13'!
+!Browser methodsFor: '*Cuis-University-Model' stamp: 'HAW 12/5/2021 11:18:55'!
 convertToEncode: encondeNumber 
 
 	| categorySubclasses class newSourceCode sourceCode |
-	
-	(encondeNumber between: 1 and: 3) ifFalse: [ self error: 'Invalid encode number' ].
 	
 	categorySubclasses := SystemOrganization listAtCategoryNamed: selectedSystemCategory.
 		
