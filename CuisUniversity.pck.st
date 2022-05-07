@@ -1,13 +1,13 @@
-'From Cuis 6.0 [latest update: #5053] on 28 January 2022 at 7:25:57 pm'!
-'Description forceBecome: a pedido de Máximo'!
-!provides: 'CuisUniversity' 1 1!
-!requires: 'Chalten' 1 18 nil!
+'From Cuis 6.0 [latest update: #5096] on 7 May 2022 at 11:26:44 am'!
+'Description create pacakge gracias Fran!!'!
+!provides: 'CuisUniversity' 1 2!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -287,7 +287,7 @@ runAllTests
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
-!CuisUniversityInstallation class methodsFor: 'browser menues' stamp: 'HAW 8/25/2021 14:50:32'!
+!CuisUniversityInstallation class methodsFor: 'browser menues' stamp: 'HAW 5/7/2022 11:22:02'!
 systemCategoryMenuOptions
 
 	^{ 
@@ -298,8 +298,16 @@ systemCategoryMenuOptions
 				#object 			-> 	#model.
 				#selector 			-> 	#changeNewLineEncode.
 				#icon 			-> 	#updateIcon
-			} asDictionary
-		}! !
+		} asDictionary.
+		{
+				#itemGroup  			->	80.
+				#itemOrder  			->	10.
+				#label  			-> 	'create package'.
+				#icon  			-> 	#packageIcon.
+				#object  			-> 	#model.
+				#selector  			->	#createPackage.
+		} asDictionary.
+	}! !
 
 !ProtoObject methodsFor: '*CuisUniversity' stamp: 'HAW 1/28/2022 19:25:26'!
 forceBecome: anotherObject
@@ -340,6 +348,16 @@ convertToEncode: encondeNumber
 			encondeNumber = 2 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crString. ].
 			encondeNumber = 3 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crlfString. ].
 			aClass compile: newSourceCode ]]]! !
+
+!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/7/2022 11:24:21'!
+createPackage
+
+	selectedSystemCategory ifNotNil: [ :categoryName |
+		CodePackage 
+			named: categoryName 	
+			createIfAbsent: true 
+			registerIfNew: true ]
+	 ! !
 
 !Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 8/25/2021 11:40:52'!
 selectEncodeToConvert
