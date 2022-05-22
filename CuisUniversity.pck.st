@@ -1,13 +1,13 @@
-'From Cuis 6.0 [latest update: #5096] on 7 May 2022 at 11:26:44 am'!
-'Description create pacakge gracias Fran!!'!
-!provides: 'CuisUniversity' 1 2!
-!requires: 'TDDGuru' 1 50 nil!
+'From Cuis 6.0 [latest update: #5173] on 21 May 2022 at 8:09:44 pm'!
+'Description Sync with PreferenceNG'!
+!provides: 'CuisUniversity' 1 3!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -199,19 +199,19 @@ test08_IfItIsNotTheOtherCases_Add_CHANGE_ME
 	self assert: 'name_CHANGE_ME' equals: 'name' asInstanceVariableName.
 	! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 10/13/2021 12:59:37'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 5/21/2022 18:47:23'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
 	StackSizeWatcher startWatchingWithDefaults.
 	DenotativeObjectLightTheme beCurrent.
-	Preferences disable: #autoNumberUserChanges.
-	Preferences disable: #logDebuggerStackToFile.
-	Preferences enable: #checkLostChangesOnStartUp.
-	Preferences setQuickAnnotationsInBrowsers.
-	
-
+	PreferenceNG name: #autoNumberUserChanges category: #system value: false.
+	PreferenceNG name: #logDebuggerStackToFile category: #programming value: false.
+	PreferenceNG name: #autoNumberUserChanges category: #system value: true.
+	PreferenceNG name: #methodAnnotations category: #programming value: #(timeStamp messageCategory packages changeSets).
+	PreferenceNG name: #classAnnotations category: #programming value: #(instanceMethodsCount classMethodsCount).
+	PreferenceNG name: #systemCategoryAnnotations category: #programming value: #(classCount instanceMethodsCount classMethodsCount).
 	
 	
 	! !
