@@ -1,13 +1,13 @@
-'From Cuis 6.0 [latest update: #5173] on 21 May 2022 at 8:09:44 pm'!
-'Description Sync with PreferenceNG'!
-!provides: 'CuisUniversity' 1 3!
-!requires: 'Chalten' 1 18 nil!
+'From Cuis 6.0 [latest update: #5234] on 11 June 2022 at 11:49:36 pm'!
+'Description Inline method and temp var integration'!
+!provides: 'CuisUniversity' 1 5!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -580,11 +580,6 @@ warnIfPossibilityOfSelfRecursion: aMethodNode
 		answer ifFalse: [ self fail ]
 	]! !
 
-!ParseNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:16:13'!
-referencesSelf
-
-	^ false! !
-
 !ParseNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:10:30'!
 sendsMessageToSelf: aSelector
 
@@ -604,11 +599,6 @@ sendsMessageToSelf: aSelector
 sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
-
-!VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:16:41'!
-referencesSelf
-
-	^ self name = 'self'! !
 
 !VariableNode class methodsFor: '*CuisUniversity-Model' stamp: 'RNG 1/19/2018 20:50:48'!
 named: aString 
