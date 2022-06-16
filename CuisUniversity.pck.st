@@ -1,13 +1,13 @@
-'From Cuis 6.0 [latest update: #5234] on 11 June 2022 at 11:49:36 pm'!
-'Description Inline method and temp var integration'!
-!provides: 'CuisUniversity' 1 5!
-!requires: 'TDDGuru' 1 50 nil!
+'From Cuis 6.0 [latest update: #5301] on 16 June 2022 at 5:56:03 pm'!
+'Description Fix check lost changes on startup'!
+!provides: 'CuisUniversity' 1 6!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -199,7 +199,7 @@ test08_IfItIsNotTheOtherCases_Add_CHANGE_ME
 	self assert: 'name_CHANGE_ME' equals: 'name' asInstanceVariableName.
 	! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 5/21/2022 18:47:23'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 6/16/2022 17:54:55'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -208,7 +208,7 @@ initialize
 	DenotativeObjectLightTheme beCurrent.
 	PreferenceNG name: #autoNumberUserChanges category: #system value: false.
 	PreferenceNG name: #logDebuggerStackToFile category: #programming value: false.
-	PreferenceNG name: #autoNumberUserChanges category: #system value: true.
+	PreferenceNG name: #checkLostChangesOnStartUp category: #system value: true.
 	PreferenceNG name: #methodAnnotations category: #programming value: #(timeStamp messageCategory packages changeSets).
 	PreferenceNG name: #classAnnotations category: #programming value: #(instanceMethodsCount classMethodsCount).
 	PreferenceNG name: #systemCategoryAnnotations category: #programming value: #(classCount instanceMethodsCount classMethodsCount).
