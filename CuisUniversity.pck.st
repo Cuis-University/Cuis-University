@@ -1,13 +1,14 @@
-'From Cuis 6.0 [latest update: #5324] on 11 July 2022 at 7:59:33 pm'!
-'Description Sync with PreferenceSet'!
-!provides: 'CuisUniversity' 1 7!
-!requires: 'TDDGuru' 1 50 nil!
+'From Cuis 6.0 [latest update: #5392] on 22 July 2022 at 1:57:12 pm'!
+'Description Category auto saving added as requirement'!
+!provides: 'CuisUniversity' 1 8!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
+!requires: 'CategoryAutoSaving' 1 1 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
