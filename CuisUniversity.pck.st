@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5494] on 5 October 2022 at 12:36:20 pm'!
+'From Cuis 6.0 [latest update: #5494] on 5 October 2022 at 12:42:17 pm'!
 'Description Use thisContext sender var name for parameters - Thanks coni garcia'!
-!provides: 'CuisUniversity' 1 10!
+!provides: 'CuisUniversity' 1 11!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
@@ -369,7 +369,7 @@ selectEncodeToConvert
 		icons: #(updateIcon updateIcon updateIcon cancelIcon) ) 
 		startUpWithCaption: 'To which binary encode would you like to change the code?'.! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/24/2019 18:38:07'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
 argumentNamesOf: aMessage sentIn: aContext
 		
 	| argumentNames cantDeduceNameCounter |
@@ -382,7 +382,7 @@ argumentNamesOf: aMessage sentIn: aContext
 						ifTrue: [ argument name ] 
 						ifFalse: [ 
 							cantDeduceNameCounter := cantDeduceNameCounter + 1.
-							'aRenameMe',cantDeduceNameCounter printString ]]]].
+							Message renameMeIdentifier,cantDeduceNameCounter printString ]]]].
 		
 	^argumentNames 
 
@@ -449,14 +449,14 @@ implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 			self down; restart ]
 ! !
 
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:31'!
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
 argumentNameAt: anIndex from: argumentNames havingNamed: alreadyNamedArguments 
 
 	| argumentName |
 
 	argumentName := argumentNames at: anIndex.
 	
-	(argumentName beginsWith: 'aRenameMe') ifTrue: [ argumentName := argumentName argumentName ].
+	(argumentName beginsWith: self class renameMeIdentifier) ifTrue: [ argumentName := argumentName argumentName ].
 	
 	[alreadyNamedArguments includes: argumentName] whileTrue: [argumentName _ argumentName, anIndex printString].
 	alreadyNamedArguments add: argumentName.
@@ -557,6 +557,11 @@ writeOn: aStream argumentNameAt: index from: argumentNames havingNamed: alreadyN
 		space
 	
 	! !
+
+!Message class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
+renameMeIdentifier
+
+	^'aRenameMe'! !
 
 !String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:37:20'!
 asInstanceVariableName
