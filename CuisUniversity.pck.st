@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5399] on 23 July 2022 at 7:09:06 pm'!
-'Description System Category auto saving added as requirement'!
-!provides: 'CuisUniversity' 1 9!
-!requires: 'TDDGuru' 1 50 nil!
+'From Cuis 6.0 [latest update: #5494] on 5 October 2022 at 12:36:20 pm'!
+'Description Use thisContext sender var name for parameters - Thanks coni garcia'!
+!provides: 'CuisUniversity' 1 10!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -417,11 +417,17 @@ compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context
 		classified: aCategory
 ! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/7/2019 14:39:43'!
-compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext 
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:20:11'!
+compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext
+	
+	| argumentNames methodSourceCode |
+	
+	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
+	
+	methodSourceCode := aMessage createStubMethodFor: aClass with: argumentNames.
 	
 	aClass
-		compile: (aMessage createStubMethodFor: aClass)
+		compile: methodSourceCode
 		classified: aCategory! !
 
 !Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/10/2019 11:08:45'!
@@ -442,6 +448,20 @@ implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 				' because:', String newLineString ,aFailure messageText.
 			self down; restart ]
 ! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:31'!
+argumentNameAt: anIndex from: argumentNames havingNamed: alreadyNamedArguments 
+
+	| argumentName |
+
+	argumentName := argumentNames at: anIndex.
+	
+	(argumentName beginsWith: 'aRenameMe') ifTrue: [ argumentName := argumentName argumentName ].
+	
+	[alreadyNamedArguments includes: argumentName] whileTrue: [argumentName _ argumentName, anIndex printString].
+	alreadyNamedArguments add: argumentName.
+
+	^argumentName! !
 
 !Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 16:04:23'!
 createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock  
@@ -496,10 +516,47 @@ createInstanceCreationMessageFor: aClass
 			newLine; tab;
 			nextPutAll: '^self new initialize', instanceCreationMessageString capitalized ]! !
 
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:40'!
+createStubMethodFor: aClass with: argumentNames 
+
+	^ String streamContents: [ :stream |
+		self writeMessageNameOn: stream with: argumentNames.
+		stream newLine; tab.
+		self writeShouldBeImplementedOn: stream.
+		(self isGetterFor: aClass) ifTrue: [ self addGetterCodeOn: stream ].
+		(self isSetterFor: aClass) ifTrue: [ self addSetterCodeOn: stream ].
+	]! !
+
 !Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/7/2019 14:49:23'!
 isInitializer 
 
 	^selector beginsWith: 'initialize'.! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:48'!
+writeMessageNameOn: aStream with: argumentNames 
+
+	| alreadyNamedArguments |
+
+	alreadyNamedArguments _ Set new.
+	self selector keywords withIndexDo: [ :keyword :index |
+		aStream nextPutAll: keyword.
+		self hasArguments ifTrue: [ self writeOn: aStream argumentNameAt: index from: argumentNames havingNamed: alreadyNamedArguments ]].
+	
+	! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:54'!
+writeOn: aStream argumentNameAt: index from: argumentNames havingNamed: alreadyNamedArguments 
+
+	| argumentName |
+	
+	argumentName _ self argumentNameAt: index from: argumentNames havingNamed: alreadyNamedArguments.
+	
+	aStream 
+		nextPutAll: ' '; 
+		nextPutAll: argumentName; 
+		space
+	
+	! !
 
 !String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:37:20'!
 asInstanceVariableName
