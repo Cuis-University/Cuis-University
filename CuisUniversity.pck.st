@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5494] on 5 October 2022 at 12:42:17 pm'!
-'Description Use thisContext sender var name for parameters - Thanks coni garcia'!
-!provides: 'CuisUniversity' 1 11!
+'From Cuis 6.0 [latest update: #5510] on 30 November 2022 at 6:34:11 pm'!
+'Description Fix when parameter is pseudoVar - Thanks coni garcia'!
+!provides: 'CuisUniversity' 1 12!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -369,7 +369,7 @@ selectEncodeToConvert
 		icons: #(updateIcon updateIcon updateIcon cancelIcon) ) 
 		startUpWithCaption: 'To which binary encode would you like to change the code?'.! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/30/2022 18:29:39'!
 argumentNamesOf: aMessage sentIn: aContext
 		
 	| argumentNames cantDeduceNameCounter |
@@ -379,7 +379,9 @@ argumentNamesOf: aMessage sentIn: aContext
 		(aNode isMessageNode and: [ aNode selectorSymbol = aMessage selector ]) 
 			ifTrue: [ argumentNames := aNode arguments collect: [ :argument | 
 					argument isVariableNode 
-						ifTrue: [ argument name ] 
+						ifTrue: [ argument isPseudoVariable
+								ifTrue: [ argument pseudoVariableNameIn: aContext ]
+								ifFalse: [ argument name ]]
 						ifFalse: [ 
 							cantDeduceNameCounter := cantDeduceNameCounter + 1.
 							Message renameMeIdentifier,cantDeduceNameCounter printString ]]]].
@@ -662,6 +664,25 @@ sendsMessageToSelf: aSelector
 sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
+
+!VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/30/2022 18:23:27'!
+isPseudoVariable
+
+	^ self isFalsePseudoVariable
+		or: [ self isTruePseudoVariable
+		or: [ self isSelfPseudoVariable
+		or: [ self isSuperPseudoVariable
+		or: [ self isThisContextPseudoVariable
+		or: [ self isNilPseudoVariable ]]]]]! !
+
+!VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/30/2022 18:29:22'!
+pseudoVariableNameIn: aContext
+
+	(self isSelfPseudoVariable or: [ self isSuperPseudoVariable] ) ifTrue: [ ^aContext receiver argumentName ].
+	(self isFalsePseudoVariable or: [ self isTruePseudoVariable]) ifTrue: [ ^ 'aBoolean' ].
+	self isThisContextPseudoVariable ifTrue: [ ^ 'aMethodContext' ].
+	
+	^'anObject'! !
 
 !VariableNode class methodsFor: '*CuisUniversity-Model' stamp: 'RNG 1/19/2018 20:50:48'!
 named: aString 
