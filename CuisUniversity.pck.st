@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5609] on 27 January 2023 at 9:16:51 am'!
-'Description changes due to UnicodeString'!
-!provides: 'CuisUniversity' 1 13!
+'From Cuis 6.0 [latest update: #5657] on 27 January 2023 at 11:43:28 am'!
+'Description fixes when generating argument names from debugger'!
+!provides: 'CuisUniversity' 1 14!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -369,36 +369,55 @@ selectEncodeToConvert
 		icons: #(updateIcon updateIcon updateIcon cancelIcon) ) 
 		startUpWithCaption: 'To which binary encode would you like to change the code?'.! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/30/2022 18:29:39'!
-argumentNamesOf: aMessage sentIn: aContext
-		
-	| argumentNames cantDeduceNameCounter |
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 10:59:33'!
+argumentNamesForMessageSent: senderNode from: aSender
+
+	| cantDeduceNameCounter |
 	
 	cantDeduceNameCounter := 0.
-	aContext methodNode nodesDo: [ :aNode |
-		(aNode isMessageNode and: [ aNode selectorSymbol = aMessage selector ]) 
-			ifTrue: [ argumentNames := aNode arguments collect: [ :argument | 
-					argument isVariableNode 
-						ifTrue: [ argument isPseudoVariable
-								ifTrue: [ argument pseudoVariableNameIn: aContext ]
-								ifFalse: [ argument name ]]
-						ifFalse: [ 
-							cantDeduceNameCounter := cantDeduceNameCounter + 1.
-							Message renameMeIdentifier,cantDeduceNameCounter printString ]]]].
+	
+	^senderNode arguments collect: [ :argumentNode | 
+		argumentNode isVariableNode 
+			ifTrue: [argumentNode argumentNameForNewMessageSentFrom: aSender ]
+			ifFalse: [ 
+				cantDeduceNameCounter := cantDeduceNameCounter + 1.
+				Message renameMeIdentifier, cantDeduceNameCounter printString ]]! !
+
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:00:52'!
+argumentNamesFrom: aMessage
+
+	| cantDeduceNameCounter |
+	
+	cantDeduceNameCounter := 0.
+	
+	^aMessage arguments collect: [ :argumentNode | 
+		cantDeduceNameCounter := cantDeduceNameCounter + 1.
+		Message renameMeIdentifier, cantDeduceNameCounter printString ]! !
+
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:22:14'!
+argumentNamesOf: aMessage sentIn: aSender
 		
-	^argumentNames 
+	| argumentNames senderMethodNode senderNode |
+	
+	senderMethodNode := aSender methodNode.
+	senderNode := (senderMethodNode parseNodeIncluding: aSender pc ifAbsent: [ nil -> nil]) key.
+	
+	 argumentNames := senderNode notNil 
+		ifTrue: [ (senderNode isMessageNode and: [ senderNode selectorSymbol = aMessage selector ]) 
+			ifTrue: [ self argumentNamesForMessageSent: senderNode from: aSender]
+			ifFalse: [ self argumentNamesFrom: aMessage ]]
+		ifFalse: [ self argumentNamesFrom: aMessage].
+		
+	^aSender receiver class collectNotDefinedInstanceVariablesFor: argumentNames 
 
 ! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/10/2019 08:18:02'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:34:46'!
 compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
 	
 	| argumentNames realCategory initializationMethodSourceCode |
 	
 	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
-		
-	"Just in case something went wrong... - Hernan"
-	argumentNames ifNil: [ ^self compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext ].
 	
 	realCategory := aCategory = Categorizer default ifTrue: [ Categorizer initialization ]  ifFalse: [ aCategory ].
 	initializationMethodSourceCode := aMessage 
@@ -419,7 +438,7 @@ compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context
 		classified: aCategory
 ! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:20:11'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:35:31'!
 compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext
 	
 	| argumentNames methodSourceCode |
@@ -449,6 +468,21 @@ implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 			self inform: 'There was a problem compiling ', aClass name, '>>#',aMessage selector,
 				' because:', String newLineString ,aFailure messageText.
 			self down; restart ]
+! !
+
+!Behavior methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:17:44'!
+collectNotDefinedInstanceVariablesFor: variableNames
+
+	| counter proposedVariableName allInstVarNames |
+	
+	counter := 0.
+	allInstVarNames := self allInstVarNames.
+	^variableNames collect: [ :variableName |
+		proposedVariableName := variableName.
+		[ allInstVarNames includes: proposedVariableName ] whileTrue: [
+			counter := counter + 1.
+			proposedVariableName := variableName, counter printString ].
+		proposedVariableName ]
 ! !
 
 !Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
@@ -664,6 +698,20 @@ sendsMessageToSelf: aSelector
 sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
+
+!VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:26:06'!
+argumentNameForNewMessageSentFrom: aSender
+
+	| argumentName |
+	
+	argumentName := self isPseudoVariable
+		ifTrue: [ self pseudoVariableNameIn: aSender ]
+		ifFalse: [ self name ].
+	
+	^ (aSender receiver class definesInstanceVariableNamedInHierarchy: argumentName) 
+		ifTrue: [ argumentName article, argumentName capitalized ]
+		ifFalse: [ argumentName ]
+	! !
 
 !VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/30/2022 18:23:27'!
 isPseudoVariable
