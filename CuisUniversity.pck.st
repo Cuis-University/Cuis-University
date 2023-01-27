@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5510] on 30 November 2022 at 6:34:11 pm'!
-'Description Fix when parameter is pseudoVar - Thanks coni garcia'!
-!provides: 'CuisUniversity' 1 12!
+'From Cuis 6.0 [latest update: #5609] on 27 January 2023 at 9:16:51 am'!
+'Description changes due to UnicodeString'!
+!provides: 'CuisUniversity' 1 13!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -233,7 +233,7 @@ openWelcomeWindow
 
 	| welcomeWindow |
 	
-	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
+	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: 'Â¡Bienvenidos a CuisUniversity!!' wrap: true.
 	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
 
 !CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 2/28/2019 19:51:03'!
@@ -241,12 +241,12 @@ welcomeWindowContents
 
 	^Compiler evaluate:  '(Text string: ''CuisUniversity
 
-Este es un ambiente creado especialmente para la enseñanza de la Programación Orientada a Objetos, usando Smalltalk como herramienta y en particular la implementación Argentina de Smalltalk denominada Cuis.
+Este es un ambiente creado especialmente para la enseÃ±anza de la ProgramaciÃ³n Orientada a Objetos, usando Smalltalk como herramienta y en particular la implementaciÃ³n Argentina de Smalltalk denominada Cuis.
 
-El objetivo es que los interesados empiecen aprendiendo qué significa trabajar con objetos concretos (denotative objects) para luego pasar a implementaciones más complejas del paradigma.
+El objetivo es que los interesados empiecen aprendiendo quÃ© significa trabajar con objetos concretos (denotative objects) para luego pasar a implementaciones mÃ¡s complejas del paradigma.
 
-Para trabajar con objetos concretos, solo basta elegir la opcion "DenotativeObject Browser" del menú principal.
-Para videos que muestran cómo usar CuisUniversity ir a: https://www.youtube.com/playlist?list=PLMkq_h36PcLCQiU5gxNmedxdXbl10JYeV
+Para trabajar con objetos concretos, solo basta elegir la opcion "DenotativeObject Browser" del menÃº principal.
+Para videos que muestran cÃ³mo usar CuisUniversity ir a: https://www.youtube.com/playlist?list=PLMkq_h36PcLCQiU5gxNmedxdXbl10JYeV
 
 Este ambiente viene con los siguientes paquetes instalados:
 - LiveTyping: Una VM especial con un ambiente de objetos extendido que anota los tipos de las variables
@@ -254,18 +254,18 @@ Este ambiente viene con los siguientes paquetes instalados:
 - DenotativeObject: Herramienta que permite trabajar con Objetos sin Clases.
 - Refactoring: Implementacion de refactorings automatizados para Cuis.
 - Aconcagua: Posibilita trabajar con medidas 
-- Chalten: Implementación del Calendario Gregoriano. Usa Aconcagua
+- Chalten: ImplementaciÃ³n del Calendario Gregoriano. Usa Aconcagua
 - Themes: Package que permite seleccionar distintos temas (colores), como Dark. Ir a "Preferences -> Themes"
   (Usar preferentemente DenotativeObjectTheme y DenotativeObjectDarkTheme)
 
 Implementadores:
-- Hernán Wilkinson, Máximo Prieto, Juan Manuel Vuletich
+- HernÃ¡n Wilkinson, MÃ¡ximo Prieto, Juan Manuel Vuletich
 
 Colaboradores
-- Nahuel Garbezza, Gastón Caruso, Angeles Tella Arena, Matias Melendi
+- Nahuel Garbezza, GastÃ³n Caruso, Angeles Tella Arena, Matias Melendi
 
 Sponsors:
-- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
+- 10Pines SRL: Este ambiente no serÃ­a posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
 
 !CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 2/28/2019 22:14:55'!
 removeSystemChangesFromChangeSet
@@ -565,7 +565,7 @@ renameMeIdentifier
 
 	^'aRenameMe'! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:37:20'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:44'!
 asInstanceVariableName
 	
 	self hasAnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
@@ -576,7 +576,7 @@ asInstanceVariableName
 	^self asInstanceVariableNameUncapitilized 
 	! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 15:42:10'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:50'!
 asInstanceVariableNameUncapitilized 
 
 	| instVarName |
@@ -586,32 +586,32 @@ asInstanceVariableNameUncapitilized
 		ifTrue: [ instVarName, '_CHANGE_ME' ]
 		ifFalse: [ instVarName ]! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:33:36'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:55'!
 continuesWithUppercaseAfterPrefix: aPrefix
 	
 	^(self beginsWith: aPrefix) and: [ self size > aPrefix size and: [ (self at: aPrefix size + 1) isUppercase ]]! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:33:36'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:01'!
 hasAPrefix
 	
 	^self continuesWithUppercaseAfterPrefix: 'a'! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:33:51'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:07'!
 hasAnPrefix
 	
 	^self continuesWithUppercaseAfterPrefix: 'an'! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:34:00'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:13'!
 hasUnPrefix
 
 	^self continuesWithUppercaseAfterPrefix: 'un'! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:34:08'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:18'!
 hasUnaPrefix
 	
 	^self continuesWithUppercaseAfterPrefix: 'una'! !
 
-!String methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/27/2021 11:36:54'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:24'!
 uncapitalizedRemovingFirst: numberOfChars
 	
 	^(self allButFirst: numberOfChars) uncapitalized ! !
