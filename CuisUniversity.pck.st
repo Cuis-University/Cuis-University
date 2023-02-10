@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5657] on 27 January 2023 at 11:43:28 am'!
-'Description fixes when generating argument names from debugger'!
-!provides: 'CuisUniversity' 1 14!
+'From Cuis 6.0 [latest update: #5657] on 10 February 2023 at 3:45:40 pm'!
+'Description fixes when generating argument names from debugger again'!
+!provides: 'CuisUniversity' 1 15!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
@@ -438,7 +438,7 @@ compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context
 		classified: aCategory
 ! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:35:31'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:43:05'!
 compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext
 	
 	| argumentNames methodSourceCode |
@@ -484,20 +484,6 @@ collectNotDefinedInstanceVariablesFor: variableNames
 			proposedVariableName := variableName, counter printString ].
 		proposedVariableName ]
 ! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
-argumentNameAt: anIndex from: argumentNames havingNamed: alreadyNamedArguments 
-
-	| argumentName |
-
-	argumentName := argumentNames at: anIndex.
-	
-	(argumentName beginsWith: self class renameMeIdentifier) ifTrue: [ argumentName := argumentName argumentName ].
-	
-	[alreadyNamedArguments includes: argumentName] whileTrue: [argumentName _ argumentName, anIndex printString].
-	alreadyNamedArguments add: argumentName.
-
-	^argumentName! !
 
 !Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 16:04:23'!
 createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock  
@@ -568,24 +554,21 @@ isInitializer
 
 	^selector beginsWith: 'initialize'.! !
 
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:48'!
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:42:28'!
 writeMessageNameOn: aStream with: argumentNames 
 
-	| alreadyNamedArguments |
-
-	alreadyNamedArguments _ Set new.
 	self selector keywords withIndexDo: [ :keyword :index |
 		aStream nextPutAll: keyword.
-		self hasArguments ifTrue: [ self writeOn: aStream argumentNameAt: index from: argumentNames havingNamed: alreadyNamedArguments ]].
+		self hasArguments ifTrue: [ self writeOn: aStream argumentNameAt: index from: argumentNames ]].
 	
 	! !
 
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:54'!
-writeOn: aStream argumentNameAt: index from: argumentNames havingNamed: alreadyNamedArguments 
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:42:10'!
+writeOn: aStream argumentNameAt: index from: argumentNames  
 
 	| argumentName |
 	
-	argumentName _ self argumentNameAt: index from: argumentNames havingNamed: alreadyNamedArguments.
+	argumentName _ argumentNames at: index.
 	
 	aStream 
 		nextPutAll: ' '; 
