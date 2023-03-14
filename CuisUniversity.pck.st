@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5657] on 10 February 2023 at 3:45:40 pm'!
-'Description fixes when generating argument names from debugger again'!
-!provides: 'CuisUniversity' 1 15!
+'From Cuis 6.0 [latest update: #5657] on 14 March 2023 at 12:09:27 pm'!
+'Description fixe when generating argument names from debugger using debuggerMap'!
+!provides: 'CuisUniversity' 1 16!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
@@ -394,13 +394,16 @@ argumentNamesFrom: aMessage
 		cantDeduceNameCounter := cantDeduceNameCounter + 1.
 		Message renameMeIdentifier, cantDeduceNameCounter printString ]! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:22:14'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/22/2023 19:20:29'!
 argumentNamesOf: aMessage sentIn: aSender
 		
-	| argumentNames senderMethodNode senderNode |
+	| argumentNames senderMethodNode senderNode messageSendRange |
 	
 	senderMethodNode := aSender methodNode.
-	senderNode := (senderMethodNode parseNodeIncluding: aSender pc ifAbsent: [ nil -> nil]) key.
+	messageSendRange := aSender debuggerMap
+		rangeForPC: aSender pc
+		contextIsActiveContext: false.
+	senderNode := (senderMethodNode parseNodeIncluding: messageSendRange first ifAbsent: [ nil -> nil]) key.
 	
 	 argumentNames := senderNode notNil 
 		ifTrue: [ (senderNode isMessageNode and: [ senderNode selectorSymbol = aMessage selector ]) 
