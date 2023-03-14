@@ -1,14 +1,15 @@
-'From Cuis 6.0 [latest update: #5657] on 14 March 2023 at 12:09:27 pm'!
-'Description fixe when generating argument names from debugger using debuggerMap'!
-!provides: 'CuisUniversity' 1 16!
+'From Cuis 6.0 [latest update: #5688] on 14 March 2023 at 12:41:11 pm'!
+'Description add requirement move instance variable'!
+!provides: 'CuisUniversity' 1 17!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'MoveInstanceVariableRefactoring' 1 31 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
