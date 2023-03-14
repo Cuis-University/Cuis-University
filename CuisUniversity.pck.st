@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5688] on 14 March 2023 at 12:41:11 pm'!
+'From Cuis 6.0 [latest update: #5688] on 14 March 2023 at 1:42:06 pm'!
 'Description add requirement move instance variable'!
-!provides: 'CuisUniversity' 1 17!
+!provides: 'CuisUniversity' 1 18!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
@@ -8,7 +8,7 @@
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'MoveInstanceVariableRefactoring' 1 31 nil!
+!requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
 !requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
