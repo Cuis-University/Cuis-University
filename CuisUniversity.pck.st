@@ -1,15 +1,15 @@
-'From Cuis 6.0 [latest update: #5688] on 14 March 2023 at 1:42:06 pm'!
-'Description add requirement move instance variable'!
-!provides: 'CuisUniversity' 1 18!
+'From Cuis 6.0 [latest update: #5695] on 15 March 2023 at 5:17:42 pm'!
+'Description Set preference to see Ansi Smalltalk assigment and return '!
+!provides: 'CuisUniversity' 1 19!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -201,7 +201,7 @@ test08_IfItIsNotTheOtherCases_Add_CHANGE_ME
 	self assert: 'name_CHANGE_ME' equals: 'name' asInstanceVariableName.
 	! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 7/11/2022 19:59:12'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/15/2023 17:16:17'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -214,6 +214,8 @@ initialize
 	Preferences name: #methodAnnotations category: #programming value: #(timeStamp messageCategory packages changeSets).
 	Preferences name: #classAnnotations category: #programming value: #(instanceMethodsCount classMethodsCount).
 	Preferences name: #systemCategoryAnnotations category: #programming value: #(classCount instanceMethodsCount classMethodsCount).
+	Preferences name: #showAssignmentAsLeftArrow category: #programming value: false.
+	
 	
 	
 	! !
