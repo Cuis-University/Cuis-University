@@ -1,15 +1,14 @@
-'From Cuis 6.0 [latest update: #5695] on 15 March 2023 at 5:17:42 pm'!
-'Description Set preference to see Ansi Smalltalk assigment and return '!
-!provides: 'CuisUniversity' 1 19!
+'From Cuis 6.0 [latest update: #5831] on 29 May 2023 at 11:46:28 pm'!
+'Description Remove code coverage as preference because it is now prereq of LiveTyping'!
+!provides: 'CuisUniversity' 1 20!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
-!requires: 'CodeCoverage' 1 32 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
