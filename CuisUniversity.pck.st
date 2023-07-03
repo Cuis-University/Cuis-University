@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5831] on 29 May 2023 at 11:46:28 pm'!
-'Description Remove code coverage as preference because it is now prereq of LiveTyping'!
-!provides: 'CuisUniversity' 1 20!
+'From Cuis 6.0 [latest update: #5832] on 3 July 2023 at 12:41:48 pm'!
+'Description Uses parameter names from message sent when creating instance creation method'!
+!provides: 'CuisUniversity' 1 22!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -435,11 +435,14 @@ compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: a
 		classified: realCategory
 		! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/7/2019 14:43:50'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/3/2023 12:05:32'!
 compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
 	
+	| argumentNames |
+	
+	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
 	aClass
-		compile: (aMessage createInstanceCreationMessageFor: aClass)
+		compile: (aMessage createInstanceCreationMessageFor: aClass with: argumentNames)
 		classified: aCategory
 ! !
 
@@ -529,13 +532,13 @@ createInitializeMessageWith: argumentNames forEachInstVarNameDo: instVarNameBloc
 		self writeShouldBeImplementedOn: stream.
 		self createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock ]! !
 
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 15:28:48'!
-createInstanceCreationMessageFor: aClass
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/3/2023 12:12:47'!
+createInstanceCreationMessageFor: aClass with: argumentNames
 
 	| instanceCreationMessageString |
-	
+		
 	^ String streamContents: [ :stream |
-		self writeMessageNameOn: stream.
+		self writeMessageNameOn: stream with: argumentNames.
 		instanceCreationMessageString := stream contents.
 		stream newLine; tab; nextPutAll: '"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"';newLine; tab.
 		self writeShouldBeImplementedOn: stream.
