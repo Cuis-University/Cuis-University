@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5832] on 3 July 2023 at 12:41:48 pm'!
-'Description Uses parameter names from message sent when creating instance creation method'!
-!provides: 'CuisUniversity' 1 22!
+'From Cuis 6.0 [latest update: #5950] on 28 July 2023 at 3:53:34 pm'!
+'Description Fix for using right arg name with genereting setter code'!
+!provides: 'CuisUniversity' 1 23!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: 'CuisUniversity-Model'!
 SystemOrganization addCategory: 'CuisUniversity-Tests'!
 
@@ -546,7 +546,7 @@ createInstanceCreationMessageFor: aClass with: argumentNames
 			newLine; tab;
 			nextPutAll: '^self new initialize', instanceCreationMessageString capitalized ]! !
 
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:31:40'!
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/28/2023 15:43:21'!
 createStubMethodFor: aClass with: argumentNames 
 
 	^ String streamContents: [ :stream |
@@ -554,7 +554,7 @@ createStubMethodFor: aClass with: argumentNames
 		stream newLine; tab.
 		self writeShouldBeImplementedOn: stream.
 		(self isGetterFor: aClass) ifTrue: [ self addGetterCodeOn: stream ].
-		(self isSetterFor: aClass) ifTrue: [ self addSetterCodeOn: stream ].
+		(self isSetterFor: aClass) ifTrue: [ self addSetterCodeOn: stream with: argumentNames first ].
 	]! !
 
 !Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/7/2019 14:49:23'!
