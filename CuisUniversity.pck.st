@@ -1,75 +1,75 @@
-'From Cuis 6.0 [latest update: #5950] on 28 July 2023 at 3:53:34 pm'!
-'Description Fix for using right arg name with genereting setter code'!
-!provides: 'CuisUniversity' 1 23!
+'From Cuis 6.0 [latest update: #6068] on 3 November 2023 at 6:14:40 pm'!
+'Description Use of TextFontFamily'!
+!provides: 'CuisUniversity' 1 24!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'TDDGuru' 1 50 nil!
-SystemOrganization addCategory: 'CuisUniversity-Model'!
-SystemOrganization addCategory: 'CuisUniversity-Tests'!
+!requires: 'Chalten' 1 18 nil!
+SystemOrganization addCategory: #'CuisUniversity-Model'!
+SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
 
-!classDefinition: #ParseNodeTest category: 'CuisUniversity-Tests'!
+!classDefinition: #ParseNodeTest category: #'CuisUniversity-Tests'!
 TestCase subclass: #ParseNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisUniversity-Tests'!
-!classDefinition: 'ParseNodeTest class' category: 'CuisUniversity-Tests'!
+!classDefinition: 'ParseNodeTest class' category: #'CuisUniversity-Tests'!
 ParseNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #BlockNodeTest category: 'CuisUniversity-Tests'!
+!classDefinition: #BlockNodeTest category: #'CuisUniversity-Tests'!
 ParseNodeTest subclass: #BlockNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisUniversity-Tests'!
-!classDefinition: 'BlockNodeTest class' category: 'CuisUniversity-Tests'!
+!classDefinition: 'BlockNodeTest class' category: #'CuisUniversity-Tests'!
 BlockNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #MessageNodeTest category: 'CuisUniversity-Tests'!
+!classDefinition: #MessageNodeTest category: #'CuisUniversity-Tests'!
 ParseNodeTest subclass: #MessageNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisUniversity-Tests'!
-!classDefinition: 'MessageNodeTest class' category: 'CuisUniversity-Tests'!
+!classDefinition: 'MessageNodeTest class' category: #'CuisUniversity-Tests'!
 MessageNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #VariableNodeTest category: 'CuisUniversity-Tests'!
+!classDefinition: #VariableNodeTest category: #'CuisUniversity-Tests'!
 ParseNodeTest subclass: #VariableNodeTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisUniversity-Tests'!
-!classDefinition: 'VariableNodeTest class' category: 'CuisUniversity-Tests'!
+!classDefinition: 'VariableNodeTest class' category: #'CuisUniversity-Tests'!
 VariableNodeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringCuisUniversityExtentionsTest category: 'CuisUniversity-Tests'!
+!classDefinition: #StringCuisUniversityExtentionsTest category: #'CuisUniversity-Tests'!
 TestCase subclass: #StringCuisUniversityExtentionsTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisUniversity-Tests'!
-!classDefinition: 'StringCuisUniversityExtentionsTest class' category: 'CuisUniversity-Tests'!
+!classDefinition: 'StringCuisUniversityExtentionsTest class' category: #'CuisUniversity-Tests'!
 StringCuisUniversityExtentionsTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #CuisUniversityInstallation category: 'CuisUniversity-Model'!
+!classDefinition: #CuisUniversityInstallation category: #'CuisUniversity-Model'!
 Object subclass: #CuisUniversityInstallation
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisUniversity-Model'!
-!classDefinition: 'CuisUniversityInstallation class' category: 'CuisUniversity-Model'!
+!classDefinition: 'CuisUniversityInstallation class' category: #'CuisUniversity-Model'!
 CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
@@ -238,7 +238,7 @@ openWelcomeWindow
 	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
 	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
 
-!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 2/28/2019 19:51:03'!
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 11/3/2023 18:12:35'!
 welcomeWindowContents
 
 	^Compiler evaluate:  '(Text string: ''CuisUniversity
@@ -267,7 +267,7 @@ Colaboradores
 - Nahuel Garbezza, Gastón Caruso, Angeles Tella Arena, Matias Melendi
 
 Sponsors:
-- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamilyAndSize basicNew instVarAt: 1 put: ''DejaVu''; instVarAt: 2 put: 22; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
+- 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamily basicNew instVarAt: 1 put: ''DejaVu''; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
 
 !CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 2/28/2019 22:14:55'!
 removeSystemChangesFromChangeSet
