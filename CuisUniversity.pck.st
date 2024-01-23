@@ -1,57 +1,17 @@
-'From Cuis 6.0 [latest update: #6068] on 3 November 2023 at 6:14:40 pm'!
-'Description Use of TextFontFamily'!
-!provides: 'CuisUniversity' 1 24!
+'From Cuis6.3 [latest update: #6167] on 23 January 2024 at 3:49:28 pm'!
+'Description Move ParseNodeTest and subclasses to BaseImageTests'!
+!provides: 'CuisUniversity' 1 25!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
-
-!classDefinition: #ParseNodeTest category: #'CuisUniversity-Tests'!
-TestCase subclass: #ParseNodeTest
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisUniversity-Tests'!
-!classDefinition: 'ParseNodeTest class' category: #'CuisUniversity-Tests'!
-ParseNodeTest class
-	instanceVariableNames: ''!
-
-!classDefinition: #BlockNodeTest category: #'CuisUniversity-Tests'!
-ParseNodeTest subclass: #BlockNodeTest
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisUniversity-Tests'!
-!classDefinition: 'BlockNodeTest class' category: #'CuisUniversity-Tests'!
-BlockNodeTest class
-	instanceVariableNames: ''!
-
-!classDefinition: #MessageNodeTest category: #'CuisUniversity-Tests'!
-ParseNodeTest subclass: #MessageNodeTest
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisUniversity-Tests'!
-!classDefinition: 'MessageNodeTest class' category: #'CuisUniversity-Tests'!
-MessageNodeTest class
-	instanceVariableNames: ''!
-
-!classDefinition: #VariableNodeTest category: #'CuisUniversity-Tests'!
-ParseNodeTest subclass: #VariableNodeTest
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisUniversity-Tests'!
-!classDefinition: 'VariableNodeTest class' category: #'CuisUniversity-Tests'!
-VariableNodeTest class
-	instanceVariableNames: ''!
 
 !classDefinition: #StringCuisUniversityExtentionsTest category: #'CuisUniversity-Tests'!
 TestCase subclass: #StringCuisUniversityExtentionsTest
@@ -73,74 +33,6 @@ Object subclass: #CuisUniversityInstallation
 CuisUniversityInstallation class
 	instanceVariableNames: ''!
 
-
-!ParseNodeTest methodsFor: 'parse nodes helpers' stamp: 'RNG 1/19/2018 21:09:10'!
-message: aSelector to: aVariableName
-
-	| variableNode selectorNode |
-	variableNode _ VariableNode named: aVariableName.
-	selectorNode _ SelectorNode new key: aSelector code: 34.
-	^ MessageNode new
-		receiver: variableNode
-		selector: selectorNode
-		arguments: #()
-		precedence: 1! !
-
-!BlockNodeTest methodsFor: 'detecting self recursion' stamp: 'RNG 1/19/2018 21:05:22'!
-testItDoesNotSendsAGivenMessageToSelfWhenTheBlockIsEmpty
-
-	| anEmptyBlock |
-	anEmptyBlock _ BlockNode empty.
-
-	self deny: (anEmptyBlock sendsMessageToSelf: #myMethod)! !
-
-!BlockNodeTest methodsFor: 'detecting self recursion' stamp: 'RNG 1/19/2018 21:08:08'!
-testItSendsAGivenMessageToSelfWhenItContainsAnStatementWithAMessageSendToSelf
-
-	| anEmptyBlock |
-	anEmptyBlock _ BlockNode withJust: (self message: #myMethod to: 'self').
-
-	self assert: (anEmptyBlock sendsMessageToSelf: #myMethod)! !
-
-!MessageNodeTest methodsFor: 'detecting self recursion' stamp: 'RNG 1/19/2018 21:02:30'!
-testItDoesNotSendTheMessageToSelfWhenTheReceiverIsNotSelf
-
-	| messageNode |
-	messageNode _ self message: #myMethod to: 'super'.
-
-	self deny: (messageNode sendsMessageToSelf: #myMethod)! !
-
-!MessageNodeTest methodsFor: 'detecting self recursion' stamp: 'RNG 1/19/2018 21:02:19'!
-testItDoesNotSendTheMessageToSelfWhenTheReceiverIsSelfButTheSelectorIsDifferent
-
-	| messageNode |
-	messageNode _ self message: #myMethod to: 'self'.
-
-	self deny: (messageNode sendsMessageToSelf: #otherMethod)! !
-
-!MessageNodeTest methodsFor: 'detecting self recursion' stamp: 'RNG 1/19/2018 21:01:10'!
-testItSendsTheMessageToSelfWhenTheReceiverIsSelf
-
-	| messageNode |
-	messageNode _ self message: #myMethod to: 'self'.
-
-	self assert: (messageNode sendsMessageToSelf: #myMethod)! !
-
-!VariableNodeTest methodsFor: 'references to self' stamp: 'RNG 1/19/2018 20:51:09'!
-testItDoesNotReferencesSelfWhenTheVariableNameIsNotSelf
-
-	| variableNode |
-	variableNode _ VariableNode named: 'abc'.
-
-	self deny: variableNode referencesSelf! !
-
-!VariableNodeTest methodsFor: 'references to self' stamp: 'RNG 1/19/2018 20:50:13'!
-testItReferencesSelfWhenTheVariableNameIsSelf
-
-	| variableNode |
-	variableNode _ VariableNode named: 'self'.
-
-	self assert: variableNode referencesSelf! !
 
 !StringCuisUniversityExtentionsTest methodsFor: 'tests' stamp: 'HAW 11/27/2021 11:25:44'!
 test01_IfBeginsWith_a_AndContinuesWithUppercase_RemovesTheA
@@ -670,20 +562,10 @@ warnIfPossibilityOfSelfRecursion: aMethodNode
 		answer ifFalse: [ self fail ]
 	]! !
 
-!ParseNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:10:30'!
-sendsMessageToSelf: aSelector
-
-	^ false! !
-
 !ParseNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:06:07'!
 sendsRecursivelyToSelf
 
 	^ false! !
-
-!BlockNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:11:55'!
-sendsMessageToSelf: aSelector
-
-	^ self statements anySatisfy: [ :statementNode | statementNode sendsMessageToSelf: aSelector ]! !
 
 !MethodNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:10:04'!
 sendsRecursivelyToSelf
@@ -722,16 +604,6 @@ pseudoVariableNameIn: aContext
 	self isThisContextPseudoVariable ifTrue: [ ^ 'aMethodContext' ].
 	
 	^'anObject'! !
-
-!VariableNode class methodsFor: '*CuisUniversity-Model' stamp: 'RNG 1/19/2018 20:50:48'!
-named: aString 
-
-	^ self new name: aString; yourself! !
-
-!MessageNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/14/2019 11:13:47'!
-sendsMessageToSelf: aSelector
-
-	^ self receiver referencesSelf and: [ self selector isNamed: aSelector ]! !
 
 !PopUpMenu class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2020 17:10:15'!
 informBlockingUI: aStringToShow
