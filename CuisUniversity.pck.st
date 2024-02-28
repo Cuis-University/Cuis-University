@@ -1,14 +1,14 @@
-'From Cuis6.3 [latest update: #6167] on 23 January 2024 at 3:49:28 pm'!
-'Description Move ParseNodeTest and subclasses to BaseImageTests'!
-!provides: 'CuisUniversity' 1 25!
+'From Cuis6.3 [latest update: #6200] on 28 February 2024 at 4:00:59 pm'!
+'Description Changed forceBecome: to use elementsExchangeIdentityWith:'!
+!provides: 'CuisUniversity' 1 26!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -204,12 +204,10 @@ systemCategoryMenuOptions
 		} asDictionary.
 	}! !
 
-!ProtoObject methodsFor: '*CuisUniversity' stamp: 'HAW 1/28/2022 19:25:26'!
+!ProtoObject methodsFor: '*CuisUniversity' stamp: 'HAW 2/28/2024 15:59:37'!
 forceBecome: anotherObject
 
-	^[ self become: anotherObject ]
-		on: MethodInCallStackToBecomeInvalid
-		do: [ :error | error resume ]  ! !
+	^{ self } elementsExchangeIdentityWith: { anotherObject }! !
 
 !Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2020 17:10:28'!
 informBlockingUI: aStringToShow
