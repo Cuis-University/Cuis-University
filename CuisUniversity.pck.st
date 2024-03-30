@@ -1,14 +1,14 @@
-'From Cuis6.3 [latest update: #6200] on 28 February 2024 at 4:00:59 pm'!
-'Description Changed forceBecome: to use elementsExchangeIdentityWith:'!
-!provides: 'CuisUniversity' 1 26!
+'From Cuis6.3 [latest update: #6304] on 30 March 2024 at 8:07:16 pm'!
+'Description Inprovement in parameter name generation'!
+!provides: 'CuisUniversity' 1 27!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -261,8 +261,8 @@ selectEncodeToConvert
 		icons: #(updateIcon updateIcon updateIcon cancelIcon) ) 
 		startUpWithCaption: 'To which binary encode would you like to change the code?'.! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 10:59:33'!
-argumentNamesForMessageSent: senderNode from: aSender
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/30/2024 19:30:31'!
+argumentNamesForMessageSent: senderNode from: aSender toImplementIn: aClass 
 
 	| cantDeduceNameCounter |
 	
@@ -270,7 +270,7 @@ argumentNamesForMessageSent: senderNode from: aSender
 	
 	^senderNode arguments collect: [ :argumentNode | 
 		argumentNode isVariableNode 
-			ifTrue: [argumentNode argumentNameForNewMessageSentFrom: aSender ]
+			ifTrue: [argumentNode argumentNameForNewMessageSentFrom: aSender toImplementIn: aClass ]
 			ifFalse: [ 
 				cantDeduceNameCounter := cantDeduceNameCounter + 1.
 				Message renameMeIdentifier, cantDeduceNameCounter printString ]]! !
@@ -286,8 +286,8 @@ argumentNamesFrom: aMessage
 		cantDeduceNameCounter := cantDeduceNameCounter + 1.
 		Message renameMeIdentifier, cantDeduceNameCounter printString ]! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/22/2023 19:20:29'!
-argumentNamesOf: aMessage sentIn: aSender
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/30/2024 19:29:33'!
+argumentNamesOf: aMessage sentIn: aSender toImplementIn: aClass 
 		
 	| argumentNames senderMethodNode senderNode messageSendRange |
 	
@@ -299,7 +299,7 @@ argumentNamesOf: aMessage sentIn: aSender
 	
 	 argumentNames := senderNode notNil 
 		ifTrue: [ (senderNode isMessageNode and: [ senderNode selectorSymbol = aMessage selector ]) 
-			ifTrue: [ self argumentNamesForMessageSent: senderNode from: aSender]
+			ifTrue: [ self argumentNamesForMessageSent: senderNode from: aSender toImplementIn: aClass]
 			ifFalse: [ self argumentNamesFrom: aMessage ]]
 		ifFalse: [ self argumentNamesFrom: aMessage].
 		
@@ -307,14 +307,16 @@ argumentNamesOf: aMessage sentIn: aSender
 
 ! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:34:46'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/30/2024 19:24:11'!
 compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
 	
 	| argumentNames realCategory initializationMethodSourceCode |
 	
-	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
+	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender toImplementIn: aClass.
 	
-	realCategory := aCategory = Categorizer default ifTrue: [ Categorizer initialization ]  ifFalse: [ aCategory ].
+	realCategory := aCategory = ClassOrganizer defaultMethodCategory 
+		ifTrue: [ Categorizer initialization ]  
+		ifFalse: [ aCategory ].
 	initializationMethodSourceCode := aMessage 
 		createInitializeMessageWith: argumentNames 
 		forEachInstVarNameDo: [ :anInstVarName |  
@@ -325,23 +327,23 @@ compileInitilizationMessage: aMessage in: aCategory fromClass: aClass context: a
 		classified: realCategory
 		! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/3/2023 12:05:32'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/30/2024 19:24:11'!
 compileInstanceCreationMessage: aMessage in: aCategory fromClass: aClass context: aContext 
 	
 	| argumentNames |
 	
-	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
+	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender toImplementIn: aClass.
 	aClass
 		compile: (aMessage createInstanceCreationMessageFor: aClass with: argumentNames)
 		classified: aCategory
 ! !
 
-!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:43:05'!
+!Debugger methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/30/2024 19:24:11'!
 compileMessage: aMessage inCategory: aCategory fromClass: aClass context: aContext
 	
 	| argumentNames methodSourceCode |
 	
-	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender.
+	argumentNames := self argumentNamesOf: aMessage sentIn: aContext sender toImplementIn: aClass.
 	
 	methodSourceCode := aMessage createStubMethodFor: aClass with: argumentNames.
 	
@@ -570,8 +572,8 @@ sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
 
-!VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:26:06'!
-argumentNameForNewMessageSentFrom: aSender
+!VariableNode methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/30/2024 19:31:20'!
+argumentNameForNewMessageSentFrom: aSender toImplementIn: aClass 
 
 	| argumentName |
 	
@@ -579,7 +581,7 @@ argumentNameForNewMessageSentFrom: aSender
 		ifTrue: [ self pseudoVariableNameIn: aSender ]
 		ifFalse: [ self name ].
 	
-	^ (aSender receiver class definesInstanceVariableNamedInHierarchy: argumentName) 
+	^ (aClass definesInstanceVariableNamedInHierarchy: argumentName) 
 		ifTrue: [ argumentName article, argumentName capitalized ]
 		ifFalse: [ argumentName ]
 	! !
