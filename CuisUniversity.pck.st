@@ -1,14 +1,14 @@
-'From Cuis6.3 [latest update: #6304] on 30 March 2024 at 8:07:16 pm'!
-'Description Inprovement in parameter name generation'!
-!provides: 'CuisUniversity' 1 27!
+'From Cuis6.3 [latest update: #6335] on 29 April 2024 at 11:55:36 am'!
+'Description Set preference to open autocompleter with tab'!
+!provides: 'CuisUniversity' 1 28!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -92,7 +92,7 @@ test08_IfItIsNotTheOtherCases_Add_CHANGE_ME
 	self assert: 'name_CHANGE_ME' equals: 'name' asInstanceVariableName.
 	! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/15/2023 17:16:17'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 4/29/2024 11:54:50'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -106,7 +106,7 @@ initialize
 	Preferences name: #classAnnotations category: #programming value: #(instanceMethodsCount classMethodsCount).
 	Preferences name: #systemCategoryAnnotations category: #programming value: #(classCount instanceMethodsCount classMethodsCount).
 	Preferences name: #showAssignmentAsLeftArrow category: #programming value: false.
-	
+	Preferences name: #spaceTabOpensAutoCompletion category: #gui value: true.
 	
 	
 	! !
