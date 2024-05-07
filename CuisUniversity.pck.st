@@ -1,14 +1,16 @@
-'From Cuis6.3 [latest update: #6335] on 29 April 2024 at 11:55:36 am'!
-'Description Set preference to open autocompleter with tab'!
-!provides: 'CuisUniversity' 1 28!
-!requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+'From Cuis6.3 [latest update: #6335] on 7 May 2024 at 4:46:44 pm'!
+'Description Add move method and extract class refactorings as requirements'!
+!provides: 'CuisUniversity' 1 29!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
-!requires: 'DenotativeObject' 1 97 nil!
+!requires: 'MoveMethodRefactoring' 1 62 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
+!requires: 'TDDGuru' 1 50 nil!
+!requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'Chalten' 1 18 nil!
+!requires: 'DenotativeObject' 1 97 nil!
+!requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
+!requires: 'ExtractClassRefactoring' 1 5 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
