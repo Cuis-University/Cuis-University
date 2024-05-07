@@ -1,15 +1,14 @@
-'From Cuis6.3 [latest update: #6350] on 7 May 2024 at 5:56:08 pm'!
-'Description Add testlint as requerimient'!
-!provides: 'CuisUniversity' 1 31!
-!requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+'From Cuis6.3 [latest update: #6335] on 7 May 2024 at 5:06:12 pm'!
+'Description remove move method and extract class refactorings as requirements'!
+!provides: 'CuisUniversity' 1 30!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
-!requires: 'DenotativeObject' 1 97 nil!
-!requires: 'TestLint' 1 41 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
+!requires: 'TDDGuru' 1 50 nil!
+!requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'Chalten' 1 18 nil!
+!requires: 'DenotativeObject' 1 97 nil!
+!requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
