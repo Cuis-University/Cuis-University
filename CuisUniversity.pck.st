@@ -1,8 +1,7 @@
-'From Cuis6.3 [latest update: #6335] on 7 May 2024 at 4:46:44 pm'!
-'Description Add move method and extract class refactorings as requirements'!
-!provides: 'CuisUniversity' 1 29!
+'From Cuis6.3 [latest update: #6335] on 7 May 2024 at 5:06:12 pm'!
+'Description remove move method and extract class refactorings as requirements'!
+!provides: 'CuisUniversity' 1 30!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
-!requires: 'MoveMethodRefactoring' 1 62 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'TDDGuru' 1 50 nil!
@@ -10,7 +9,6 @@
 !requires: 'Chalten' 1 18 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'ExtractClassRefactoring' 1 5 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
