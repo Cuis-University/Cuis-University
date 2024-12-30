@@ -1,14 +1,14 @@
-'From Cuis7.1 [latest update: #6578] on 10 August 2024 at 4:33:48 pm'!
-'Description Udated to Cuis 7.1'!
-!provides: 'CuisUniversity' 1 31!
+'From Cuis7.3 [latest update: #6959] on 30 December 2024 at 8:14:35 pm'!
+'Description Udated to Cuis 7.3'!
+!provides: 'CuisUniversity' 1 32!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'ComplexRefactorings' 1 0 nil!
 !requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -34,13 +34,13 @@ StringCuisUniversityExtentionsTest class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/10/2024 16:33:25'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 12/30/2024 18:25:13'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
 	StackSizeWatcher startWatchingWithDefaults.
-	DenotativeObjectLightTheme beCurrent.
+	DenotativeObjectTheme beCurrent.
 	Preferences name: #autoNumberUserChanges category: #system value: false.
 	Preferences name: #logDebuggerStackToFile category: #programming value: false.
 	Preferences name: #checkLostChangesOnStartUp category: #system value: true.
@@ -50,7 +50,7 @@ initialize
 	Preferences name: #showAssignmentAsLeftArrow category: #programming value: false.
 	Preferences name: #spaceTabOpensAutoCompletion category: #gui value: true.
 	
-	BrowserWindow at: #systemCategoriesListMenuSpec registerMenuAndShortcutsSpecProvider:
+	BrowserWindow at: #systemCatListMenuSpec registerMenuAndShortcutsSpecProvider:
 		(MessageSend receiver: CuisUniversityInstallation selector: #systemCategoriesListMenuSpec).! !
 
 !CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/6/2021 18:44:01'!
@@ -124,17 +124,12 @@ runAllTests
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
-!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 7/30/2024 15:36:02'!
+!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 12/30/2024 19:13:54'!
 systemCategoriesListMenuSpec
-	"
-	BrowserWindow at: #systemCategoriesListMenuSpec registerMenuAndShortcutsSpecProvider:
-		(MessageSend receiver: CuisUniversityInstallation selector: #systemCategoriesListMenuSpec).
-	Do this in CuisUniversityInstallation class >> initialize
-	"
+	
 	^#(
-		#(121		'change new line encode...' 							nil 	model 			changeNewLineEncode 								updateIcon)
-		#(300 		'-----')
-		#(310		'create package' 							nil 	model 			createPackage 								packageIcon)
+		#(121		'Change New Line Encode...' 							nil 	model 			changeNewLineEncode 								updateIcon)
+		#(310		'Create Package' 							nil 	model 			createPackage 								packageIcon)
 	)! !
 
 !StringCuisUniversityExtentionsTest methodsFor: 'tests' stamp: 'HAW 11/27/2021 11:25:44'!
