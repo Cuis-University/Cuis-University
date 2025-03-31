@@ -1,14 +1,12 @@
-'From Cuis7.3 [latest update: #6959] on 30 December 2024 at 8:14:35 pm'!
-'Description Udated to Cuis 7.3'!
-!provides: 'CuisUniversity' 1 32!
+'From Cuis7.3 [latest update: #7084] on 28 March 2025 at 8:58:16 pm'!
+'Description Before CuisProRefactorings'!
+!provides: 'CuisUniversity' 1 33!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'Chalten' 1 18 nil!
+!requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
 !requires: 'Tools-Finder' 1 49 nil!
-!requires: 'ComplexRefactorings' 1 0 nil!
-!requires: 'MoveInstanceVariableRefactoring' 1 30 nil!
-!requires: 'TDDGuru' 1 50 nil!
+!requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -201,15 +199,21 @@ informBlockingUI: aStringToShow
 
 	aStringToShow isEmptyOrNil ifFalse: [PopUpMenu informBlockingUI: aStringToShow]! !
 
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:44'!
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2025 18:30:31'!
 asInstanceVariableName
+	
+	^self asInstanceVariableNameIfHasNoPrefix: [ self asInstanceVariableNameUncapitilized ]
+	! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2025 18:30:13'!
+asInstanceVariableNameIfHasNoPrefix: aBlock
 	
 	self hasAnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
 	self hasAPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 1 ].
 	self hasUnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
 	self hasUnaPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 3 ].
 	
-	^self asInstanceVariableNameUncapitilized 
+	^aBlock value
 	! !
 
 !CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:50'!
