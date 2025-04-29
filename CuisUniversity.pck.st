@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7084] on 28 March 2025 at 8:58:16 pm'!
-'Description Before CuisProRefactorings'!
-!provides: 'CuisUniversity' 1 33!
+'From Cuis7.3 [latest update: #7102] on 29 April 2025 at 8:30:24 am'!
+'Description Unload menues'!
+!provides: 'CuisUniversity' 1 34!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
@@ -32,7 +32,7 @@ StringCuisUniversityExtentionsTest class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 12/30/2024 18:25:13'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 4/29/2025 08:14:14'!
 initialize
 
 	UnitsTestResource  installUnitsAsGlobals.
@@ -48,8 +48,9 @@ initialize
 	Preferences name: #showAssignmentAsLeftArrow category: #programming value: false.
 	Preferences name: #spaceTabOpensAutoCompletion category: #gui value: true.
 	
-	BrowserWindow at: #systemCatListMenuSpec registerMenuAndShortcutsSpecProvider:
-		(MessageSend receiver: CuisUniversityInstallation selector: #systemCategoriesListMenuSpec).! !
+	BrowserWindow 
+		at: #systemCatListMenuSpec 
+		registerMenuAndShortcutsSpecProvider: self systemCategoriesListMenuSpecSend.! !
 
 !CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/6/2021 18:44:01'!
 initializeWithLiveTypingVM
@@ -61,6 +62,15 @@ initializeWithLiveTypingVM
 
 	TranscriptWindow allInstancesDo: [:aTranscriptWindow | aTranscriptWindow delete ].
 ! !
+
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 4/29/2025 08:14:40'!
+unload
+
+	"More things to undone... - Hernan"
+	
+	BrowserWindow 
+		at: #systemCatListMenuSpec 
+		unregisterMenuAndShortcutsSpecProvider: self systemCategoriesListMenuSpecSend.! !
 
 !CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 19:59:40'!
 openWelcomeWindow
@@ -122,13 +132,18 @@ runAllTests
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
-!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 12/30/2024 19:13:54'!
-systemCategoriesListMenuSpec
+!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 4/29/2025 08:17:48'!
+systemCatListMenuSpec
 	
 	^#(
 		#(121		'Change New Line Encode...' 							nil 	model 			changeNewLineEncode 								updateIcon)
 		#(310		'Create Package' 							nil 	model 			createPackage 								packageIcon)
 	)! !
+
+!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 4/29/2025 08:17:48'!
+systemCategoriesListMenuSpecSend
+
+	^ MessageSend receiver: self selector: #systemCatListMenuSpec! !
 
 !StringCuisUniversityExtentionsTest methodsFor: 'tests' stamp: 'HAW 11/27/2021 11:25:44'!
 test01_IfBeginsWith_a_AndContinuesWithUppercase_RemovesTheA
