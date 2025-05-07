@@ -1,10 +1,11 @@
-'From Cuis7.3 [latest update: #7102] on 29 April 2025 at 8:30:24 am'!
-'Description Unload menues'!
-!provides: 'CuisUniversity' 1 34!
+'From Cuis7.3 [latest update: #7108] on 7 May 2025 at 12:18:58 pm'!
+'Description Message !!= and <> - EnclosedChars package'!
+!provides: 'CuisUniversity' 1 35!
 !requires: 'SystemCategoryAutoSaving' 1 0 nil!
 !requires: 'TDDGuru' 1 50 nil!
 !requires: 'Morphic-Widgets-Extras' 1 38 nil!
 !requires: 'DenotativeObject' 1 97 nil!
+!requires: 'EnclosableChars' 1 13 nil!
 !requires: 'Tools-Finder' 1 49 nil!
 !requires: 'Chalten' 1 18 nil!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
@@ -19,6 +20,16 @@ Object subclass: #CuisUniversityInstallation
 	category: 'CuisUniversity-Model'!
 !classDefinition: 'CuisUniversityInstallation class' category: #'CuisUniversity-Model'!
 CuisUniversityInstallation class
+	instanceVariableNames: ''!
+
+!classDefinition: #ObjectExtentionsTest category: #'CuisUniversity-Tests'!
+TestCase subclass: #ObjectExtentionsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CuisUniversity-Tests'!
+!classDefinition: 'ObjectExtentionsTest class' category: #'CuisUniversity-Tests'!
+ObjectExtentionsTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #StringCuisUniversityExtentionsTest category: #'CuisUniversity-Tests'!
@@ -145,6 +156,22 @@ systemCategoriesListMenuSpecSend
 
 	^ MessageSend receiver: self selector: #systemCatListMenuSpec! !
 
+!ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 5/7/2025 12:16:40'!
+test01_NotEqualMessageAsInCBehavesAsNotEqual
+
+	self assert: 1 !!= 2.
+	self deny: 1 !!= 1
+
+! !
+
+!ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 5/7/2025 12:17:03'!
+test02_NotEqualMessageAsInMathBehavesAsNotEqual
+
+	self assert: 1 <> 2.
+	self deny: 1 <> 1
+
+! !
+
 !StringCuisUniversityExtentionsTest methodsFor: 'tests' stamp: 'HAW 11/27/2021 11:25:44'!
 test01_IfBeginsWith_a_AndContinuesWithUppercase_RemovesTheA
 
@@ -207,6 +234,20 @@ test08_IfItIsNotTheOtherCases_Add_CHANGE_ME
 forceBecome: anotherObject
 
 	^{ self } elementsExchangeIdentityWith: { anotherObject }! !
+
+!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/7/2025 12:15:00'!
+!!= anObject 
+	
+	"Just for convinience - Hernan"
+
+	^self ~= anObject! !
+
+!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/7/2025 12:14:52'!
+<> anObject 
+
+	"Just for convinience - Hernan"
+
+	^self ~= anObject! !
 
 !Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2020 17:10:28'!
 informBlockingUI: aStringToShow
