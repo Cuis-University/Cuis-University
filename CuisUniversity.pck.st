@@ -1,13 +1,6 @@
-'From Cuis7.3 [latest update: #7108] on 7 May 2025 at 12:18:58 pm'!
-'Description Message !!= and <> - EnclosedChars package'!
-!provides: 'CuisUniversity' 1 35!
-!requires: 'SystemCategoryAutoSaving' 1 0 nil!
-!requires: 'TDDGuru' 1 50 nil!
-!requires: 'Morphic-Widgets-Extras' 1 38 nil!
-!requires: 'DenotativeObject' 1 97 nil!
-!requires: 'EnclosableChars' 1 13 nil!
-!requires: 'Tools-Finder' 1 49 nil!
-!requires: 'Chalten' 1 18 nil!
+'From Cuis7.3 [latest update: #7146] on 12 May 2025 at 11:41:07 am'!
+'Description No requierements but the really need ones'!
+!provides: 'CuisUniversity' 1 36!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -255,63 +248,6 @@ informBlockingUI: aStringToShow
 
 	aStringToShow isEmptyOrNil ifFalse: [PopUpMenu informBlockingUI: aStringToShow]! !
 
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2025 18:30:31'!
-asInstanceVariableName
-	
-	^self asInstanceVariableNameIfHasNoPrefix: [ self asInstanceVariableNameUncapitilized ]
-	! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2025 18:30:13'!
-asInstanceVariableNameIfHasNoPrefix: aBlock
-	
-	self hasAnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
-	self hasAPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 1 ].
-	self hasUnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
-	self hasUnaPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 3 ].
-	
-	^aBlock value
-	! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:50'!
-asInstanceVariableNameUncapitilized 
-
-	| instVarName |
-	
-	instVarName := self uncapitalized.
-	^self = instVarName 
-		ifTrue: [ instVarName, '_CHANGE_ME' ]
-		ifFalse: [ instVarName ]! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:55'!
-continuesWithUppercaseAfterPrefix: aPrefix
-	
-	^(self beginsWith: aPrefix) and: [ self size > aPrefix size and: [ (self at: aPrefix size + 1) isUppercase ]]! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:01'!
-hasAPrefix
-	
-	^self continuesWithUppercaseAfterPrefix: 'a'! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:07'!
-hasAnPrefix
-	
-	^self continuesWithUppercaseAfterPrefix: 'an'! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:13'!
-hasUnPrefix
-
-	^self continuesWithUppercaseAfterPrefix: 'un'! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:18'!
-hasUnaPrefix
-	
-	^self continuesWithUppercaseAfterPrefix: 'una'! !
-
-!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:24'!
-uncapitalizedRemovingFirst: numberOfChars
-	
-	^(self allButFirst: numberOfChars) uncapitalized ! !
-
 !Parser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 12/23/2019 12:22:55'!
 performInteractiveChecks: aMethodNode
 
@@ -383,118 +319,6 @@ pseudoVariableNameIn: aContext
 	self isThisContextPseudoVariable ifTrue: [ ^ 'aMethodContext' ].
 	
 	^'anObject'! !
-
-!Behavior methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:17:44'!
-collectNotDefinedInstanceVariablesFor: variableNames
-
-	| counter proposedVariableName allInstVarNames |
-	
-	counter := 0.
-	allInstVarNames := self allInstVarNames.
-	^variableNames collect: [ :variableName |
-		proposedVariableName := variableName.
-		[ allInstVarNames includes: proposedVariableName ] whileTrue: [
-			counter := counter + 1.
-			proposedVariableName := variableName, counter printString ].
-		proposedVariableName ]
-! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 16:04:23'!
-createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock  
-
-	| instVarName |
-	
-	argumentNames do: [ :anArgumentName | 
-		instVarName := anArgumentName asInstanceVariableName.
-		instVarNameBlock value: instVarName.
-		stream
-			newLine;tab;
-			nextPutAll: instVarName;
-			nextPutAll: ' := ';
-			nextPutAll: anArgumentName;
-			nextPut: $. ].		
-! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/12/2019 09:05:37'!
-createInitializeMessageDefinitionIn: stream with: argumentNames
-
-	self selector isUnary 
-		ifTrue: [ stream nextPutAll: self selector ]
-		ifFalse: [ 
-			self selector keywords withIndexDo: [ :keyword :index | 
-				stream 
-					nextPutAll: keyword;
-					space;
-					nextPutAll: (argumentNames at: index);
-					space ]]
-! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 16:05:36'!
-createInitializeMessageWith: argumentNames forEachInstVarNameDo: instVarNameBlock 
-
-	^ String streamContents: [ :stream |
-		self createInitializeMessageDefinitionIn: stream with: argumentNames.
-		stream newLine;tab.		
-		self writeShouldBeImplementedOn: stream.
-		self createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock ]! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/3/2023 12:12:47'!
-createInstanceCreationMessageFor: aClass with: argumentNames
-
-	| instanceCreationMessageString |
-		
-	^ String streamContents: [ :stream |
-		self writeMessageNameOn: stream with: argumentNames.
-		instanceCreationMessageString := stream contents.
-		stream newLine; tab; nextPutAll: '"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"';newLine; tab.
-		self writeShouldBeImplementedOn: stream.
-		stream
-			newLine; tab;
-			nextPutAll: '^self new initialize', instanceCreationMessageString capitalized ]! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/28/2023 15:43:21'!
-createStubMethodFor: aClass with: argumentNames 
-
-	^ String streamContents: [ :stream |
-		self writeMessageNameOn: stream with: argumentNames.
-		stream newLine; tab.
-		self writeShouldBeImplementedOn: stream.
-		(self isGetterFor: aClass) ifTrue: [ self addGetterCodeOn: stream ].
-		(self isSetterFor: aClass) ifTrue: [ self addSetterCodeOn: stream with: argumentNames first ].
-	]! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/7/2019 14:49:23'!
-isInitializer 
-
-	^selector beginsWith: 'initialize'.! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:42:28'!
-writeMessageNameOn: aStream with: argumentNames 
-
-	self selector keywords withIndexDo: [ :keyword :index |
-		aStream nextPutAll: keyword.
-		self hasArguments ifTrue: [ self writeOn: aStream argumentNameAt: index from: argumentNames ]].
-	
-	! !
-
-!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:42:10'!
-writeOn: aStream argumentNameAt: index from: argumentNames  
-
-	| argumentName |
-	
-	argumentName _ argumentNames at: index.
-	
-	aStream 
-		nextPutAll: ' '; 
-		nextPutAll: argumentName; 
-		space
-	
-	! !
-
-!Message class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
-renameMeIdentifier
-
-	^'aRenameMe'! !
 
 !Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 12/5/2021 11:19:13'!
 changeNewLineEncode
@@ -650,6 +474,175 @@ implement: aMessage inCategory: aCategory fromClass: aClass context: aContext
 				' because:', String newLineString ,aFailure messageText.
 			self down; restart ]
 ! !
+
+!Behavior methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/27/2023 11:17:44'!
+collectNotDefinedInstanceVariablesFor: variableNames
+
+	| counter proposedVariableName allInstVarNames |
+	
+	counter := 0.
+	allInstVarNames := self allInstVarNames.
+	^variableNames collect: [ :variableName |
+		proposedVariableName := variableName.
+		[ allInstVarNames includes: proposedVariableName ] whileTrue: [
+			counter := counter + 1.
+			proposedVariableName := variableName, counter printString ].
+		proposedVariableName ]
+! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2025 18:30:31'!
+asInstanceVariableName
+	
+	^self asInstanceVariableNameIfHasNoPrefix: [ self asInstanceVariableNameUncapitilized ]
+	! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2025 18:30:13'!
+asInstanceVariableNameIfHasNoPrefix: aBlock
+	
+	self hasAnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
+	self hasAPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 1 ].
+	self hasUnPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 2 ].
+	self hasUnaPrefix ifTrue: [ ^self uncapitalizedRemovingFirst: 3 ].
+	
+	^aBlock value
+	! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:50'!
+asInstanceVariableNameUncapitilized 
+
+	| instVarName |
+	
+	instVarName := self uncapitalized.
+	^self = instVarName 
+		ifTrue: [ instVarName, '_CHANGE_ME' ]
+		ifFalse: [ instVarName ]! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:09:55'!
+continuesWithUppercaseAfterPrefix: aPrefix
+	
+	^(self beginsWith: aPrefix) and: [ self size > aPrefix size and: [ (self at: aPrefix size + 1) isUppercase ]]! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:01'!
+hasAPrefix
+	
+	^self continuesWithUppercaseAfterPrefix: 'a'! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:07'!
+hasAnPrefix
+	
+	^self continuesWithUppercaseAfterPrefix: 'an'! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:13'!
+hasUnPrefix
+
+	^self continuesWithUppercaseAfterPrefix: 'un'! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:18'!
+hasUnaPrefix
+	
+	^self continuesWithUppercaseAfterPrefix: 'una'! !
+
+!CharacterSequence methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/13/2023 10:10:24'!
+uncapitalizedRemovingFirst: numberOfChars
+	
+	^(self allButFirst: numberOfChars) uncapitalized ! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 16:04:23'!
+createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock  
+
+	| instVarName |
+	
+	argumentNames do: [ :anArgumentName | 
+		instVarName := anArgumentName asInstanceVariableName.
+		instVarNameBlock value: instVarName.
+		stream
+			newLine;tab;
+			nextPutAll: instVarName;
+			nextPutAll: ' := ';
+			nextPutAll: anArgumentName;
+			nextPut: $. ].		
+! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 11/12/2019 09:05:37'!
+createInitializeMessageDefinitionIn: stream with: argumentNames
+
+	self selector isUnary 
+		ifTrue: [ stream nextPutAll: self selector ]
+		ifFalse: [ 
+			self selector keywords withIndexDo: [ :keyword :index | 
+				stream 
+					nextPutAll: keyword;
+					space;
+					nextPutAll: (argumentNames at: index);
+					space ]]
+! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/8/2019 16:05:36'!
+createInitializeMessageWith: argumentNames forEachInstVarNameDo: instVarNameBlock 
+
+	^ String streamContents: [ :stream |
+		self createInitializeMessageDefinitionIn: stream with: argumentNames.
+		stream newLine;tab.		
+		self writeShouldBeImplementedOn: stream.
+		self createInitializationMessageAssigmentsIn: stream with: argumentNames forEachInstVarNameDo: instVarNameBlock ]! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/3/2023 12:12:47'!
+createInstanceCreationMessageFor: aClass with: argumentNames
+
+	| instanceCreationMessageString |
+		
+	^ String streamContents: [ :stream |
+		self writeMessageNameOn: stream with: argumentNames.
+		instanceCreationMessageString := stream contents.
+		stream newLine; tab; nextPutAll: '"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"';newLine; tab.
+		self writeShouldBeImplementedOn: stream.
+		stream
+			newLine; tab;
+			nextPutAll: '^self new initialize', instanceCreationMessageString capitalized ]! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/28/2023 15:43:21'!
+createStubMethodFor: aClass with: argumentNames 
+
+	^ String streamContents: [ :stream |
+		self writeMessageNameOn: stream with: argumentNames.
+		stream newLine; tab.
+		self writeShouldBeImplementedOn: stream.
+		(self isGetterFor: aClass) ifTrue: [ self addGetterCodeOn: stream ].
+		(self isSetterFor: aClass) ifTrue: [ self addSetterCodeOn: stream with: argumentNames first ].
+	]! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/7/2019 14:49:23'!
+isInitializer 
+
+	^selector beginsWith: 'initialize'.! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:42:28'!
+writeMessageNameOn: aStream with: argumentNames 
+
+	self selector keywords withIndexDo: [ :keyword :index |
+		aStream nextPutAll: keyword.
+		self hasArguments ifTrue: [ self writeOn: aStream argumentNameAt: index from: argumentNames ]].
+	
+	! !
+
+!Message methodsFor: '*CuisUniversity-Model' stamp: 'HAW 2/10/2023 15:42:10'!
+writeOn: aStream argumentNameAt: index from: argumentNames  
+
+	| argumentName |
+	
+	argumentName _ argumentNames at: index.
+	
+	aStream 
+		nextPutAll: ' '; 
+		nextPutAll: argumentName; 
+		space
+	
+	! !
+
+!Message class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 10/5/2022 12:41:12'!
+renameMeIdentifier
+
+	^'aRenameMe'! !
 
 !PopUpMenu class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2020 17:10:15'!
 informBlockingUI: aStringToShow
