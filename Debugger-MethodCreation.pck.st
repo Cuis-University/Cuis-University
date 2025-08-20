@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7146] on 12 May 2025 at 1:57:53 pm'!
-'Description First version - Extracted from CuisUniversity'!
-!provides: 'Debugger-MethodCreation' 1 1!
+'From Cuis7.5 [latest update: #7428] on 20 August 2025 at 11:37:37 am'!
+'Description Avoid using well know object as parameter name'!
+!provides: 'Debugger-MethodCreation' 1 2!
 SystemOrganization addCategory: #'Debugger-MethodCreation-Tests'!
 
 
@@ -106,19 +106,24 @@ pseudoVariableNameIn: aContext
 	
 	^'anObject'! !
 
-!Debugger methodsFor: '*Debugger-MethodCreation' stamp: 'HAW 3/30/2024 19:30:31'!
+!Debugger methodsFor: '*Debugger-MethodCreation' stamp: 'HAW 8/20/2025 11:35:04'!
 argumentNamesForMessageSent: senderNode from: aSender toImplementIn: aClass 
 
 	| cantDeduceNameCounter |
 	
 	cantDeduceNameCounter := 0.
 	
-	^senderNode arguments collect: [ :argumentNode | 
-		argumentNode isVariableNode 
-			ifTrue: [argumentNode argumentNameForNewMessageSentFrom: aSender toImplementIn: aClass ]
-			ifFalse: [ 
+	^ senderNode arguments collect: [ :argumentNode | |candidateName|
+		candidateName := argumentNode isVariableNode 
+			ifTrue: [ argumentNode argumentNameForNewMessageSentFrom: aSender toImplementIn: aClass] 
+			ifFalse: [ '' ].
+	
+		(candidateName isEmpty or: [ Smalltalk includesKey: candidateName asSymbol ])
+			ifTrue: [
 				cantDeduceNameCounter := cantDeduceNameCounter + 1.
-				Message renameMeIdentifier, cantDeduceNameCounter printString ]]! !
+				Message renameMeIdentifier, cantDeduceNameCounter printString] 
+			ifFalse: [ candidateName ]
+	]! !
 
 !Debugger methodsFor: '*Debugger-MethodCreation' stamp: 'HAW 1/27/2023 11:00:52'!
 argumentNamesFrom: aMessage
