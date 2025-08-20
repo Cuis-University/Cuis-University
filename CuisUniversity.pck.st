@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7146] on 12 May 2025 at 2:58:50 pm'!
-'Description Removed Debugger-MethodCreation'!
-!provides: 'CuisUniversity' 1 37!
+'From Cuis7.5 [latest update: #7428] on 20 August 2025 at 11:35:36 am'!
+'Description Rename mk categories - units in Spanish'!
+!provides: 'CuisUniversity' 1 38!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -26,11 +26,17 @@ ObjectExtentionsTest class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 4/29/2025 08:14:14'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/20/2025 09:45:20'!
 initialize
 
+	self renameMKCategories.
+	self removeSystemChangesFromChangeSet.
+	
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
+	self removeDuplicatedUnits.
+	self addSpanishUnits.
+	
 	StackSizeWatcher startWatchingWithDefaults.
 	DenotativeObjectTheme beCurrent.
 	Preferences name: #autoNumberUserChanges category: #system value: false.
@@ -138,6 +144,73 @@ systemCatListMenuSpec
 systemCategoriesListMenuSpecSend
 
 	^ MessageSend receiver: self selector: #systemCatListMenuSpec! !
+
+!CuisUniversityInstallation class methodsFor: 'rename mk categories' stamp: 'HAW 8/20/2025 09:37:54'!
+renameMKCategories
+
+	ProtoObject withAllSubclassesDo: [ :aClass | | beforeSelectorsSize |
+		beforeSelectorsSize := aClass selectors size.
+		self renameMKCategoriesOf: aClass.	
+		beforeSelectorsSize ~= aClass selectors size ifTrue: [ self halt ] ]
+	
+	! !
+
+!CuisUniversityInstallation class methodsFor: 'rename mk categories' stamp: 'HAW 8/20/2025 09:38:22'!
+renameMKCategoriesOf: aClass
+
+	aClass methodCategories 
+		select: [ :aCategory | aCategory beginsWith: '[' ]
+		thenDo: [ :aCategory | | newCategory selectors | 
+			"I assume all [m..] follow the same pattern of leaving an space after it - Hernan"
+			newCategory := aCategory last: aCategory size - (aCategory indexOf: $ ).
+			selectors := aClass organization listAtCategoryNamed: aCategory.
+			aClass organization classifyAll: selectors under: newCategory.
+			aClass organization removeCategory: aCategory ]! !
+
+!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 8/20/2025 09:47:03'!
+addSpanishUnits.
+	"Thanks Facu"
+	
+	" Unidades en castellano, inspirado en https://github.com/Cuis-University/Cuis-University/issues/3 "
+	Smalltalk at: #miligramo put: milligram.
+	Smalltalk at: #gramo put: gram.
+	Smalltalk at: #kilogramo put: kilogram.
+
+	Smalltalk at: #milisegundo put: millisecond.
+	Smalltalk at: #segundo put: second.
+	Smalltalk at: #minuto put: minute.
+	Smalltalk at: #hora put: hour.
+	Smalltalk at: #día put: day.
+	Smalltalk at: #semana put: week.
+	Smalltalk at: #mes put: month.
+	Smalltalk at: #año put: year.
+
+	Smalltalk at: #milímetro put: millimeter.
+	Smalltalk at: #centímetro put: centimeter.
+	Smalltalk at: #decímetro put: decimeter.
+	Smalltalk at: #metro put: meter.
+	Smalltalk at: #decámetro put: decameter.
+	Smalltalk at: #hectómetro put: hectometer.
+	Smalltalk at: #kilómetro put: kilometer.
+
+	Smalltalk at: #dólar put: dollar.
+
+	" Infinito en castellano "
+	Smalltalk at: #infinito put: infinity.
+	Smalltalk at: #menosInfinito put: minusInfinity.
+	Smalltalk at: #másInfinito put: infinity.! !
+
+!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 8/20/2025 09:46:53'!
+removeDuplicatedUnits
+	"Thanks Facu"
+	
+	" Eliminar unidades duplicadas (creemos que es un bug) "
+	Unit allSubInstances groupBy: [:unit | unit name]
+		:: select: [:group | group size > 1]
+		:: do: [:group | |originalUnit|
+			originalUnit := group first.
+			group allButFirst do: [:duplicatedUnit | duplicatedUnit becomeForward: originalUnit ]
+		].! !
 
 !ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 5/7/2025 12:16:40'!
 test01_NotEqualMessageAsInCBehavesAsNotEqual
