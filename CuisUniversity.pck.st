@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7428] on 20 August 2025 at 11:35:36 am'!
-'Description Rename mk categories - units in Spanish'!
-!provides: 'CuisUniversity' 1 38!
+'From Cuis7.5 [latest update: #7428] on 20 August 2025 at 12:02:22 pm'!
+'Description do not remove duplicate units using become'!
+!provides: 'CuisUniversity' 1 39!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -26,7 +26,7 @@ ObjectExtentionsTest class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/20/2025 09:45:20'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/20/2025 12:01:52'!
 initialize
 
 	self renameMKCategories.
@@ -34,7 +34,6 @@ initialize
 	
 	UnitsTestResource  installUnitsAsGlobals.
 	TimeUnits installUnitsAsGlobals.
-	self removeDuplicatedUnits.
 	self addSpanishUnits.
 	
 	StackSizeWatcher startWatchingWithDefaults.
