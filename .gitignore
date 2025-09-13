@@ -3,3 +3,4 @@ CoreUpdates
 *.image
 *.sources
 Packages
+.DS_Store
