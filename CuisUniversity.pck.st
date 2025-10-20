@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7428] on 20 August 2025 at 12:02:22 pm'!
-'Description do not remove duplicate units using become'!
-!provides: 'CuisUniversity' 1 39!
+'From Cuis7.5 [latest update: #7594] on 20 September 2025 at 6:48:26 pm'!
+'Description Removes addtional dot'!
+!provides: 'CuisUniversity' 1 40!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -166,8 +166,8 @@ renameMKCategoriesOf: aClass
 			aClass organization classifyAll: selectors under: newCategory.
 			aClass organization removeCategory: aCategory ]! !
 
-!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 8/20/2025 09:47:03'!
-addSpanishUnits.
+!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 9/20/2025 18:11:00'!
+addSpanishUnits
 	"Thanks Facu"
 	
 	" Unidades en castellano, inspirado en https://github.com/Cuis-University/Cuis-University/issues/3 "
