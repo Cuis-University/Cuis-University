@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7671] on 5 December 2025 at 2:16:20 pm'!
-'Description Support for unas and unos'!
-!provides: 'Debugger-MethodCreation' 1 3!
+'From Cuis7.5 [latest update: #7671] on 9 December 2025 at 9:17:08 pm'!
+'Description Fix when parameter name is repeated'!
+!provides: 'Debugger-MethodCreation' 1 4!
 SystemOrganization addCategory: #'Debugger-MethodCreation-Tests'!
 
 
@@ -267,23 +267,31 @@ renameMeIdentifier
 
 	^'aRenameMe'! !
 
-!Debugger methodsFor: '*Debugger-MethodCreation' stamp: 'HAW 8/20/2025 11:35:04'!
+!Debugger methodsFor: '*Debugger-MethodCreation' stamp: 'HAW 12/9/2025 21:08:21'!
 argumentNamesForMessageSent: senderNode from: aSender toImplementIn: aClass 
 
 	| cantDeduceNameCounter |
 	
 	cantDeduceNameCounter := 0.
 	
-	^ senderNode arguments collect: [ :argumentNode | |candidateName|
-		candidateName := argumentNode isVariableNode 
-			ifTrue: [ argumentNode argumentNameForNewMessageSentFrom: aSender toImplementIn: aClass] 
-			ifFalse: [ '' ].
-	
-		(candidateName isEmpty or: [ Smalltalk includesKey: candidateName asSymbol ])
-			ifTrue: [
-				cantDeduceNameCounter := cantDeduceNameCounter + 1.
-				Message renameMeIdentifier, cantDeduceNameCounter printString] 
-			ifFalse: [ candidateName ]
+	^senderNode arguments 
+		inject: OrderedCollection new 
+		into: [ :names :argumentNode | |candidateName originalCandidateName |
+			candidateName := argumentNode isVariableNode 
+				ifTrue: [ argumentNode argumentNameForNewMessageSentFrom: aSender toImplementIn: aClass] 
+				ifFalse: [ '' ].
+		
+		candidateName := (candidateName isEmpty or: [ Smalltalk includesKey: candidateName asSymbol ])
+			ifTrue: [ Message renameMeIdentifier ]
+			ifFalse: [ candidateName ].
+		
+		originalCandidateName := candidateName.	
+		[ names includes: candidateName ] whileTrue: [ 
+			cantDeduceNameCounter := cantDeduceNameCounter + 1.
+			candidateName := originalCandidateName, cantDeduceNameCounter printString ].
+		
+		names add: candidateName.
+		names
 	]! !
 
 !Debugger methodsFor: '*Debugger-MethodCreation' stamp: 'HAW 1/27/2023 11:00:52'!
