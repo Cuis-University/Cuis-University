@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7594] on 20 September 2025 at 6:48:26 pm'!
-'Description Removes addtional dot'!
-!provides: 'CuisUniversity' 1 40!
+'From Cuis7.7 [latest update: #7791] on 9 January 2026 at 4:36:00 pm'!
+'Description Enable shift+click'!
+!provides: 'CuisUniversity' 1 41!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
@@ -26,10 +26,9 @@ ObjectExtentionsTest class
 	instanceVariableNames: ''!
 
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 8/20/2025 12:01:52'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 9/Jan/2026 15:42:37'!
 initialize
 
-	self renameMKCategories.
 	self removeSystemChangesFromChangeSet.
 	
 	UnitsTestResource  installUnitsAsGlobals.
@@ -46,12 +45,13 @@ initialize
 	Preferences name: #systemCategoryAnnotations category: #programming value: #(classCount instanceMethodsCount classMethodsCount).
 	Preferences name: #showAssignmentAsLeftArrow category: #programming value: false.
 	Preferences name: #spaceTabOpensAutoCompletion category: #gui value: true.
+	Preferences name: #shiftClickShowsImplementors category: #programming value: true.
 	
 	BrowserWindow 
 		at: #systemCatListMenuSpec 
 		registerMenuAndShortcutsSpecProvider: self systemCategoriesListMenuSpecSend.! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 3/6/2021 18:44:01'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 6/Mar/2021 18:44:01'!
 initializeWithLiveTypingVM
 
 	self 
@@ -62,7 +62,7 @@ initializeWithLiveTypingVM
 	TranscriptWindow allInstancesDo: [:aTranscriptWindow | aTranscriptWindow delete ].
 ! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 4/29/2025 08:14:40'!
+!CuisUniversityInstallation class methodsFor: 'initialization' stamp: 'HAW 29/Apr/2025 08:14:40'!
 unload
 
 	"More things to undone... - Hernan"
@@ -71,7 +71,7 @@ unload
 		at: #systemCatListMenuSpec 
 		unregisterMenuAndShortcutsSpecProvider: self systemCategoriesListMenuSpecSend.! !
 
-!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/28/2018 19:59:40'!
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 28/Mar/2018 19:59:40'!
 openWelcomeWindow
 
 	| welcomeWindow |
@@ -79,7 +79,7 @@ openWelcomeWindow
 	welcomeWindow := SystemWindow editText: (TextModel withText: (self welcomeWindowContents)) label: '¡Bienvenidos a CuisUniversity!!' wrap: true.
 	welcomeWindow resize: (Rectangle origin: 45@40 extent: 910@435)! !
 
-!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 11/3/2023 18:12:35'!
+!CuisUniversityInstallation class methodsFor: 'welcome window' stamp: 'HAW 3/Nov/2023 18:12:35'!
 welcomeWindowContents
 
 	^Compiler evaluate:  '(Text string: ''CuisUniversity
@@ -110,14 +110,14 @@ Colaboradores
 Sponsors:
 - 10Pines SRL: Este ambiente no sería posible sin la horas de trabajo cedidas por 10Pines para hacerlo.'' runs: (RunArray runs: #(14 1 1605 ) values: ((Array new: 3) at: 1 put: ((Array new: 4) at: 1 put: (TextFontFamily basicNew instVarAt: 1 put: ''DejaVu''; yourself); at: 2 put: (TextEmphasis basicNew instVarAt: 1 put: 1; yourself); at: 3 put: (TextColor basicNew instVarAt: 1 put: (Color r: 0.000 g: 0.000 b: 1.000); yourself); at: 4 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 2 put: ((Array new: 1) at: 1 put: (TextAlignment basicNew instVarAt: 1 put: 2; yourself); yourself); at: 3 put: #(); yourself)))'! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 2/28/2019 22:14:55'!
+!CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 28/Feb/2019 22:14:55'!
 removeSystemChangesFromChangeSet
 
 	ChangeSet allChangeSets 
 		select: [ :aChangeSet | aChangeSet isForBaseSystem ] 
 		thenDo: [ :aChangeSet | ChangeSet removeChangeSet: aChangeSet ]! !
 
-!CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 2/28/2019 22:14:40'!
+!CuisUniversityInstallation class methodsFor: 'initialization - private' stamp: 'HAW 28/Feb/2019 22:14:40'!
 runAllTests
 
 	| testClasses testSuite |
@@ -131,7 +131,7 @@ runAllTests
 	MenuMorph allInstances do: [:aMorph | aMorph delete ].
 	SystemWindow allInstances select: [ :aSystemWindow | aSystemWindow label = 'old instance' ] thenDo: [:aMorph | aMorph delete ].! !
 
-!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 4/29/2025 08:17:48'!
+!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 29/Apr/2025 08:17:48'!
 systemCatListMenuSpec
 	
 	^#(
@@ -139,34 +139,12 @@ systemCatListMenuSpec
 		#(310		'Create Package' 							nil 	model 			createPackage 								packageIcon)
 	)! !
 
-!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 4/29/2025 08:17:48'!
+!CuisUniversityInstallation class methodsFor: 'menu & kbd shortcuts' stamp: 'HAW 29/Apr/2025 08:17:48'!
 systemCategoriesListMenuSpecSend
 
 	^ MessageSend receiver: self selector: #systemCatListMenuSpec! !
 
-!CuisUniversityInstallation class methodsFor: 'rename mk categories' stamp: 'HAW 8/20/2025 09:37:54'!
-renameMKCategories
-
-	ProtoObject withAllSubclassesDo: [ :aClass | | beforeSelectorsSize |
-		beforeSelectorsSize := aClass selectors size.
-		self renameMKCategoriesOf: aClass.	
-		beforeSelectorsSize ~= aClass selectors size ifTrue: [ self halt ] ]
-	
-	! !
-
-!CuisUniversityInstallation class methodsFor: 'rename mk categories' stamp: 'HAW 8/20/2025 09:38:22'!
-renameMKCategoriesOf: aClass
-
-	aClass methodCategories 
-		select: [ :aCategory | aCategory beginsWith: '[' ]
-		thenDo: [ :aCategory | | newCategory selectors | 
-			"I assume all [m..] follow the same pattern of leaving an space after it - Hernan"
-			newCategory := aCategory last: aCategory size - (aCategory indexOf: $ ).
-			selectors := aClass organization listAtCategoryNamed: aCategory.
-			aClass organization classifyAll: selectors under: newCategory.
-			aClass organization removeCategory: aCategory ]! !
-
-!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 9/20/2025 18:11:00'!
+!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 20/Sep/2025 18:11:00'!
 addSpanishUnits
 	"Thanks Facu"
 	
@@ -199,7 +177,7 @@ addSpanishUnits
 	Smalltalk at: #menosInfinito put: minusInfinity.
 	Smalltalk at: #másInfinito put: infinity.! !
 
-!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 8/20/2025 09:46:53'!
+!CuisUniversityInstallation class methodsFor: 'units' stamp: 'HAW 20/Aug/2025 09:46:53'!
 removeDuplicatedUnits
 	"Thanks Facu"
 	
@@ -211,7 +189,7 @@ removeDuplicatedUnits
 			group allButFirst do: [:duplicatedUnit | duplicatedUnit becomeForward: originalUnit ]
 		].! !
 
-!ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 5/7/2025 12:16:40'!
+!ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 7/May/2025 12:16:40'!
 test01_NotEqualMessageAsInCBehavesAsNotEqual
 
 	self assert: 1 !!= 2.
@@ -219,7 +197,7 @@ test01_NotEqualMessageAsInCBehavesAsNotEqual
 
 ! !
 
-!ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 5/7/2025 12:17:03'!
+!ObjectExtentionsTest methodsFor: 'tests' stamp: 'HAW 7/May/2025 12:17:03'!
 test02_NotEqualMessageAsInMathBehavesAsNotEqual
 
 	self assert: 1 <> 2.
@@ -227,32 +205,32 @@ test02_NotEqualMessageAsInMathBehavesAsNotEqual
 
 ! !
 
-!ProtoObject methodsFor: '*CuisUniversity' stamp: 'HAW 2/28/2024 15:59:37'!
+!ProtoObject methodsFor: '*CuisUniversity' stamp: 'HAW 28/Feb/2024 15:59:37'!
 forceBecome: anotherObject
 
 	^{ self } elementsExchangeIdentityWith: { anotherObject }! !
 
-!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/7/2025 12:15:00'!
+!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/May/2025 12:15:00'!
 !!= anObject 
 	
 	"Just for convinience - Hernan"
 
 	^self ~= anObject! !
 
-!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/7/2025 12:14:52'!
+!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/May/2025 12:14:52'!
 <> anObject 
 
 	"Just for convinience - Hernan"
 
 	^self ~= anObject! !
 
-!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2020 17:10:28'!
+!Object methodsFor: '*CuisUniversity-Model' stamp: 'HAW 24/Mar/2020 17:10:28'!
 informBlockingUI: aStringToShow
 	"Display aString blocking the UI"
 
 	aStringToShow isEmptyOrNil ifFalse: [PopUpMenu informBlockingUI: aStringToShow]! !
 
-!Parser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 12/23/2019 12:22:55'!
+!Parser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 23/Dec/2019 12:22:55'!
 performInteractiveChecks: aMethodNode
 
 	self
@@ -260,7 +238,7 @@ performInteractiveChecks: aMethodNode
 		declareUndeclaredTemps: aMethodNode;
 		removeUnusedTempsOf: aMethodNode ! !
 
-!Parser methodsFor: '*CuisUniversity-Model' stamp: 'RNG 1/19/2018 20:46:19'!
+!Parser methodsFor: '*CuisUniversity-Model' stamp: 'RNG 19/Jan/2018 20:46:19'!
 possibleSelfRecursionWarningMessage: aSelector
 
 	^ 'Warning: possibility of infinite recursion.'
@@ -268,7 +246,7 @@ possibleSelfRecursionWarningMessage: aSelector
 	'Sending ' , aSelector printString
 	, ' to self inside the method body'! !
 
-!Parser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 1/7/2019 15:02:24'!
+!Parser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/Jan/2019 15:02:24'!
 warnIfPossibilityOfSelfRecursion: aMethodNode
 
 	^ aMethodNode sendsRecursivelyToSelf ifTrue: [
@@ -281,17 +259,17 @@ warnIfPossibilityOfSelfRecursion: aMethodNode
 		answer ifFalse: [ self fail ]
 	]! !
 
-!ParseNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:06:07'!
+!ParseNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 31/Dec/2017 19:06:07'!
 sendsRecursivelyToSelf
 
 	^ false! !
 
-!MethodNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 12/31/2017 19:10:04'!
+!MethodNode methodsFor: '*CuisUniversity-Model' stamp: 'RNG 31/Dec/2017 19:10:04'!
 sendsRecursivelyToSelf
 
 	^ self body sendsMessageToSelf: self selector! !
 
-!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 12/5/2021 11:19:13'!
+!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/Dec/2021 11:19:13'!
 changeNewLineEncode
 	
 	| index |
@@ -302,7 +280,7 @@ changeNewLineEncode
 	(index between: 1 and: 3) ifTrue: [ self convertToEncode: index ].
 	! !
 
-!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 12/5/2021 11:18:55'!
+!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/Dec/2021 11:18:55'!
 convertToEncode: encondeNumber 
 
 	| categorySubclasses class newSourceCode sourceCode |
@@ -318,7 +296,7 @@ convertToEncode: encondeNumber
 			encondeNumber = 3 ifTrue: [ newSourceCode := sourceCode withLineEndings: String crlfString. ].
 			aClass compile: newSourceCode ]]]! !
 
-!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 5/7/2022 11:24:21'!
+!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 7/May/2022 11:24:21'!
 createPackage
 
 	selectedSystemCategory ifNotNil: [ :categoryName |
@@ -328,7 +306,7 @@ createPackage
 			registerIfNew: true ]
 	 ! !
 
-!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 8/25/2021 11:40:52'!
+!Browser methodsFor: '*CuisUniversity-Model' stamp: 'HAW 25/Aug/2021 11:40:52'!
 selectEncodeToConvert
 
 	^(PopUpMenu 
@@ -337,7 +315,7 @@ selectEncodeToConvert
 		icons: #(updateIcon updateIcon updateIcon cancelIcon) ) 
 		startUpWithCaption: 'To which binary encode would you like to change the code?'.! !
 
-!PopUpMenu class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 3/24/2020 17:10:15'!
+!PopUpMenu class methodsFor: '*CuisUniversity-Model' stamp: 'HAW 24/Mar/2020 17:10:15'!
 informBlockingUI: aStringToShow
 
 	(self labels: ' OK ' icons: #(emblemImportantIcon)) startUpWithCaption: aStringToShow ! !
