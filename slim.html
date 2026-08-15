@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Downloading CuisUniversity (slim)…</title>
+</head>
+<body>
+<p id="msg">Fetching the latest <strong>CuisUniversity (slim)</strong> download…</p>
+<p>If it doesn't start, use
+   <a href="https://github.com/Cuis-University/Cuis-University/releases/latest">the latest release</a>.</p>
+<script>
+// Redirects to the LATEST release's *-slim.zip asset (version-named), so this page never needs editing.
+(function () {
+  var repo = 'Cuis-University/Cuis-University';
+  var pattern = /-\d+-slim\.zip$/i;             // versioned CuisUniversity<ver>-slim.zip (ignores un-versioned leftovers)
+  var releasesLatest = 'https://github.com/' + repo + '/releases/latest';
+  function fail(m) { document.getElementById('msg').innerHTML =
+    m + ' Go to <a href="' + releasesLatest + '">the latest release</a>.'; }
+  fetch('https://api.github.com/repos/' + repo + '/releases/latest',
+        { headers: { 'Accept': 'application/vnd.github+json' } })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (rel) {
+      var a = (rel.assets || []).filter(function (x) { return pattern.test(x.name); })[0];
+      if (a && a.browser_download_url) { location.replace(a.browser_download_url); }
+      else { fail('No matching zip in the latest release.'); }
+    })
+    .catch(function (e) { fail('Could not resolve the download (' + e.message + ').'); });
+})();
+</script>
+</body>
+</html>
