@@ -1,6 +1,6 @@
 'From Cuis7.5 [latest update: #7671] on 9 December 2025 at 9:17:08 pm'!
 'Description Fix when parameter name is repeated'!
-!provides: 'Debugger-MethodCreation' 1 4!
+!provides: 'Debugger-MethodCreation' '1.4.0'!
 SystemOrganization addCategory: #'Debugger-MethodCreation-Tests'!
 
 

@@ -1,6 +1,6 @@
 'From Cuis7.7 [latest update: #7791] on 9 January 2026 at 4:36:00 pm'!
 'Description Enable shift+click'!
-!provides: 'CuisUniversity' 1 41!
+!provides: 'CuisUniversity' '1.41.0'!
 SystemOrganization addCategory: #'CuisUniversity-Model'!
 SystemOrganization addCategory: #'CuisUniversity-Tests'!
 
